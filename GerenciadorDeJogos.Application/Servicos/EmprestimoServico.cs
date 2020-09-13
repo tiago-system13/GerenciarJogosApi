@@ -38,16 +38,16 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(_mapper.Map<ListaPaginavel<EmprestimoResult>>(_emprestimoRepositorio.PesquisarEmprestimos(_mapper.Map<PesquisaEmprestimo>(pesquisaResquest))));
         }
 
-        public async Task<EmprestimoResult> DevolverAsync(EmprestimoRequest emprestimoRequest)
+        public async Task<EmprestimoResult> DevolverAsync(DevolucaoRequest devolucaoRequest)
         { 
-            var emprestimoDb = _emprestimoRepositorio.BuscarPorId(emprestimoRequest.Id);
+            var emprestimoDb = _emprestimoRepositorio.BuscarPorId(devolucaoRequest.Id);
 
             if (emprestimoDb == null)
             {
                 throw new ArgumentException("Emprestimo não encontrado!");
             }
 
-            EfetivarDevolucao(emprestimoDb.ItensEmprestados, emprestimoRequest.ItensEmprestados);
+            EfetivarDevolucao(emprestimoDb.ItensEmprestados, devolucaoRequest.ItensDevolvidos);
 
             return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.Atualizar(emprestimoDb)));
         }
@@ -74,14 +74,14 @@ namespace GerenciadorDeJogos.Application.Servicos
             return emprestimo.DataEmprestimo.AddDays(emprestimo.QuantidadeDeDias);
         }
 
-        private void EfetivarDevolucao(List<ItensEmprestados> itensEmprestados, List<ItensEmprestadosRequest> itensDevolvido)
+        private void EfetivarDevolucao(List<ItensEmprestados> itensEmprestados, List<ItensDevolvidosRequest> itensDevolvido)
         {
-            foreach (var devolvido in itensDevolvido.Where(j => j.Devolvido))
+            foreach (var itemDevolvido in itensDevolvido.Where(j => j.Devolvido == true))
             {
-                foreach (var item in itensEmprestados.Where(i => i.Id == devolvido.Id && i.DataDevolucao == null))
+                foreach (var item in itensEmprestados.Where(i => i.EmprestimoId == itemDevolvido.EmprestimoId && i.JogoId == itemDevolvido.JogoId && i.DataDevolucao == null))
                 {
                     item.DataDevolucao = DateTime.Now;
-                    item.Devolvido = true;
+                    item.Devolvido = itemDevolvido.Devolvido;
                 }
             }
         }

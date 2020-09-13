@@ -11,7 +11,7 @@ namespace GerenciadorDeJogos.Application.Interfaces
     {
         Task<EmprestimoResult> EmprestarAsync(EmprestimoRequest emprestimoRequest);
 
-        Task<EmprestimoResult> DevolverAsync(EmprestimoRequest emprestimoRequest);
+        Task<EmprestimoResult> DevolverAsync(DevolucaoRequest devolucaoRequest);
 
         Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorAmigoAsync(Guid amigoId);
 

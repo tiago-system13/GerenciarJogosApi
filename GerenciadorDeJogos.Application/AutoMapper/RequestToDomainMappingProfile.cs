@@ -17,6 +17,10 @@ namespace GerenciadorDeJogos.Application.AutoMapper
 
             CreateMap<EmprestimoRequest, Emprestimo>();
 
+            CreateMap<ItensDevolvidosRequest, ItensEmprestados>();
+                 
+            CreateMap<DevolucaoRequest, Emprestimo>();
+
             CreateMap<PesquisaResquest, Pesquisa>();
         }
     }
