@@ -6,6 +6,8 @@ using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Domain.Entidades;
 using GerenciadorDeJogos.Domain.Entidades.Base;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GerenciadorDeJogos.Application.Servicos
@@ -40,6 +42,18 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.BuscarPorId(id)));
         }
 
+        public async Task<List<AmigoResult>> BuscarPorNome(string nome)
+        {
+            var amigos = _amigoRepositorio.ListarTodos();
+
+            if (!string.IsNullOrWhiteSpace(nome))
+            {
+                amigos = amigos.Where(a=> a.Nome.ToLower().Contains(nome.ToLower()));
+            }
+
+            return await Task.FromResult(_mapper.Map<List<AmigoResult>>(amigos));
+        }
+
         public async Task<bool> ExcluirAsync(Guid id)
         {
             var ExisteAmigo = _amigoRepositorio.Existe(id);
@@ -63,8 +77,17 @@ namespace GerenciadorDeJogos.Application.Servicos
 
         public async Task<ListaPaginavel<AmigoResult>> PesquisarAsync(PesquisaResquest pesquisa)
         {
-            var resultadoPesquisa =_amigoRepositorio.PesquisarAmigos(_mapper.Map<Pesquisa>(pesquisa));
+            IQueryable<Amigo> query;
 
+            query = _amigoRepositorio.ListarTodos().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pesquisa.Nome))
+            {
+                query = query.Where(x => x.Nome.ToLower().Contains(pesquisa.Nome.ToLower()));
+            }
+
+            var resultadoPesquisa = query.ParaListaPaginavel(pesquisa.IndiceDePagina, pesquisa.RegistrosPorPagina, pesquisa.Ordenacao, x => x.Nome);
+           
             return await Task.FromResult(_mapper.Map<ListaPaginavel<AmigoResult>>(resultadoPesquisa));
         }
     }

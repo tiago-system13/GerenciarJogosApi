@@ -1,6 +1,7 @@
 ﻿using GerenciadorDeJogos.Application.Models.Request;
 using GerenciadorDeJogos.Domain.Entidades.Base;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GerenciadorDeJogos.Application.Interfaces
@@ -12,5 +13,6 @@ namespace GerenciadorDeJogos.Application.Interfaces
         Task<JogoRequest> AtualizarAsync(JogoRequest amigoRequest);
         Task<bool> ExcluirAsync(Guid id);
         Task<ListaPaginavel<JogoRequest>> PesquisarAsync(PesquisaResquest pesquisa);
+        Task<List<JogoRequest>> BuscarPorNome(string nome);
     }
 }
