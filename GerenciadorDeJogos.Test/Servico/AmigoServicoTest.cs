@@ -15,7 +15,7 @@ namespace GerenciadorDeJogos.Test.Servico
     {
         private ConfigTest _config;
 
-        private AmigoServico servicoMack;
+        private AmigoServico servicoMock;
 
         private Mock<IAmigoRepositorio> repositorioMock;
 
@@ -27,9 +27,7 @@ namespace GerenciadorDeJogos.Test.Servico
            
             repositorioMock = new Mock<IAmigoRepositorio>();
 
-            repositorioMock.Setup(a => a.Inserir(It.IsAny<Amigo>())).Returns(GetAmigosMock().FirstOrDefault);
-
-            servicoMack = new AmigoServico(repositorioMock.Object, _config.Mappe);
+            servicoMock = new AmigoServico(repositorioMock.Object, _config.Mappe);
 
         }
 
@@ -39,7 +37,9 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var amigoRequest = CriarAmigoRequest("Tiago");
 
-            var amigoResult = servicoMack.InserirAsync(amigoRequest).Result;
+            repositorioMock.Setup(a => a.Inserir(It.IsAny<Amigo>())).Returns(GetAmigosMock().FirstOrDefault);
+
+            var amigoResult = servicoMock.InserirAsync(amigoRequest).Result;
 
             repositorioMock.Verify(a => a.Inserir(It.IsAny<Amigo>()), Times.Once);
 
@@ -60,7 +60,7 @@ namespace GerenciadorDeJogos.Test.Servico
             var amigoRequest = CriarAmigoRequest("João");
             amigoRequest.Id = amigoMock.Id;
 
-            var amigoResult = servicoMack.AtualizarAsync(amigoRequest).Result;
+            var amigoResult = servicoMock.AtualizarAsync(amigoRequest).Result;
 
             repositorioMock.Verify(a => a.Atualizar(It.IsAny<Amigo>()), Times.Once);
 
@@ -79,7 +79,7 @@ namespace GerenciadorDeJogos.Test.Servico
             var amigoRequest = CriarAmigoRequest("João");
             amigoRequest.Id = amigoMock.Id;
 
-            var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMack.AtualizarAsync(amigoRequest));
+            var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.AtualizarAsync(amigoRequest));
      
             Assert.That(ex.Message, Is.EqualTo("Amigo Não Encontrado!"));
             repositorioMock.Verify(a => a.Atualizar(It.IsAny<Amigo>()), Times.Never);
@@ -94,7 +94,7 @@ namespace GerenciadorDeJogos.Test.Servico
 
             repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<Guid>())).Returns(amigoMock);
 
-            var amigoResult = servicoMack.BuscarPorIdAsync(It.IsAny<Guid>()).Result;
+            var amigoResult = servicoMock.BuscarPorIdAsync(It.IsAny<Guid>()).Result;
 
             Assert.NotNull(amigoResult);
             Assert.AreEqual(amigoMock.Nome, amigoResult.Nome);
@@ -108,7 +108,7 @@ namespace GerenciadorDeJogos.Test.Servico
             
             repositorioMock.Setup(a => a.ListarTodos()).Returns(GetAmigosMock().AsQueryable());
 
-            var amigosResult = servicoMack.BuscarPorNome("Tiago").Result;
+            var amigosResult = servicoMock.BuscarPorNome("Tiago").Result;
 
             Assert.IsNotEmpty(amigosResult);
             Assert.True(amigosResult.Any(a=> a.Nome == "Tiago"));
@@ -131,7 +131,7 @@ namespace GerenciadorDeJogos.Test.Servico
                 RegistrosPorPagina = 10
             };
 
-            var amigosResult = servicoMack.PesquisarAsync(pesquisa).Result;
+            var amigosResult = servicoMock.PesquisarAsync(pesquisa).Result;
 
             Assert.IsNotEmpty(amigosResult);
             Assert.AreEqual(amigosResult.Count, amigos.Count);
@@ -153,7 +153,7 @@ namespace GerenciadorDeJogos.Test.Servico
                 RegistrosPorPagina = 10
             };
 
-            var amigosResult = servicoMack.PesquisarAsync(pesquisa).Result;
+            var amigosResult = servicoMock.PesquisarAsync(pesquisa).Result;
 
             Assert.IsNotEmpty(amigosResult);
             Assert.AreEqual(amigosResult.Count, 1);
@@ -168,7 +168,7 @@ namespace GerenciadorDeJogos.Test.Servico
 
             repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(true);
 
-            var excluido = servicoMack.ExcluirAsync(amigoMock.Id).Result;
+            var excluido = servicoMock.ExcluirAsync(amigoMock.Id).Result;
 
             Assert.NotNull(excluido);
             Assert.True(excluido);
@@ -177,13 +177,13 @@ namespace GerenciadorDeJogos.Test.Servico
 
         [Test]
 
-        public void ExcluirAmigo_Excecption_AmigoNaoEncontrado()
+        public void Excluir_Excecption_AmigoNaoEncontrado()
         {
             var amigoMock = GetAmigosMock().First();
 
             repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(false);
 
-            var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMack.ExcluirAsync(amigoMock.Id));
+            var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.ExcluirAsync(amigoMock.Id));
 
             Assert.That(ex.Message, Is.EqualTo("Amigo Não Encontrado!"));
             repositorioMock.Verify(a => a.Excluir(It.IsAny<Guid>()), Times.Never);
