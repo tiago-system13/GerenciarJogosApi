@@ -16,8 +16,8 @@ namespace GerenciadorDeJogos.Infrastructure.Mapeamentos
                .HasMaxLength(40)
                .IsRequired();
 
-            builder.Property(x => x.AccessKey)
-               .HasColumnName("AccessKey")
+            builder.Property(x => x.Senha)
+               .HasColumnName("senha")
                .IsRequired();
 
             builder.ToTable("tb_usuario");

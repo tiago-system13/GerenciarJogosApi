@@ -17,7 +17,7 @@ namespace GerenciadorDeJogos.Infrastructure.Mapeamentos
                .IsRequired();
 
             builder.Property(x => x.ProprietarioId)
-               .HasColumnName("proprietario_id")
+               .HasColumnName("amigo_id")
                .HasMaxLength(40)
                .IsRequired();
 

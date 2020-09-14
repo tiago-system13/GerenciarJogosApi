@@ -29,7 +29,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             if (usuario != null && !string.IsNullOrWhiteSpace(usuario.Login))
             {
                 var baseUser = _repositorio.BuscarPorLogin(usuario.Login);
-                credentialsIsValid = (baseUser != null && usuario.Login == baseUser.Login && usuario.AccessKey == baseUser.AccessKey);
+                credentialsIsValid = (baseUser != null && usuario.Login == baseUser.Login && usuario.Senha == baseUser.Senha);
             }
             if (credentialsIsValid)
             {
