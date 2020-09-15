@@ -9,7 +9,7 @@ services:
     environment:
       TZ: America/Sao_Paulo    
     ports:
-      - "44331:80"
+      - "80:80"
     links:
       - db_gerenciar_jogo
     depends_on:
