@@ -1,17 +1,17 @@
 ﻿using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Domain.Entidades;
 using GerenciadorDeJogos.Infrastructure.Contexto;
+using GerenciadorDeJogos.Infrastructure.Repositorios.Base;
 using System.Linq;
 
 namespace GerenciadorDeJogos.Infrastructure.Repositorios
 {
-    public class UsuarioRepositorio : IUsuarioRepositorio
+    public class UsuarioRepositorio : RepositorioBase<Usuario>, IUsuarioRepositorio
     {
-        private readonly JogosContexto _context;
 
-        public UsuarioRepositorio(JogosContexto context)
+        public UsuarioRepositorio(JogosContexto context):base(context)
         {
-            _context = context;
+           
         }
 
         public Usuario BuscarPorLogin(string login)

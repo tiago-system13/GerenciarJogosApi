@@ -23,7 +23,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             _tokenConfiguracao = tokenConfiguracao;
         }
 
-        public async Task<object> BuscarLoginAsync(UsuarioRequest usuario)
+        public async Task<object> BuscarLoginAsync(LoginRequest usuario)
         {
             bool credentialsIsValid = false;
             if (usuario != null && !string.IsNullOrWhiteSpace(usuario.Login))

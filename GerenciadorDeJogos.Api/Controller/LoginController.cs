@@ -18,7 +18,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [AllowAnonymous]
         [HttpPost]
-        public object Post([FromBody]UsuarioRequest user)
+        public object Post([FromBody]LoginRequest user)
         {
             if (user == null) return BadRequest();
             return _loginServico.BuscarLoginAsync(user).ConfigureAwait(false); 

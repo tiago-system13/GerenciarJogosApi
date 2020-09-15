@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorDeJogos.Api", "GerenciadorDeJogos.Api\GerenciadorDeJogos.Api.csproj", "{786C696D-855C-46FF-8BCD-FF82BB8C282A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciadorDeJogos.Api", "GerenciadorDeJogos.Api\GerenciadorDeJogos.Api.csproj", "{786C696D-855C-46FF-8BCD-FF82BB8C282A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorDeJogos.Application", "GerenciadorDeJogos.Application\GerenciadorDeJogos.Application.csproj", "{8ED6DA7A-B177-4708-9C9B-8E0D4AB1A379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciadorDeJogos.Application", "GerenciadorDeJogos.Application\GerenciadorDeJogos.Application.csproj", "{8ED6DA7A-B177-4708-9C9B-8E0D4AB1A379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorDeJogos.Domain", "GerenciadorDeJogos.Domain\GerenciadorDeJogos.Domain.csproj", "{8C409B40-A9B2-494D-82B0-04BAF7BD1E06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciadorDeJogos.Domain", "GerenciadorDeJogos.Domain\GerenciadorDeJogos.Domain.csproj", "{8C409B40-A9B2-494D-82B0-04BAF7BD1E06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorDeJogos.Infrastructure", "GerenciadorDeJogos.Infrastructure\GerenciadorDeJogos.Infrastructure.csproj", "{75953876-B04A-45BD-8451-8B437CC857B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciadorDeJogos.Infrastructure", "GerenciadorDeJogos.Infrastructure\GerenciadorDeJogos.Infrastructure.csproj", "{75953876-B04A-45BD-8451-8B437CC857B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorDeJogos.Test", "GerenciadorDeJogos.Test\GerenciadorDeJogos.Test.csproj", "{AD13A8C5-C9B2-406B-916B-7C69941D0B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciadorDeJogos.Test", "GerenciadorDeJogos.Test\GerenciadorDeJogos.Test.csproj", "{AD13A8C5-C9B2-406B-916B-7C69941D0B3F}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2A073FE6-7605-4651-A78B-0F490E7235A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{AD13A8C5-C9B2-406B-916B-7C69941D0B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD13A8C5-C9B2-406B-916B-7C69941D0B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD13A8C5-C9B2-406B-916B-7C69941D0B3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A073FE6-7605-4651-A78B-0F490E7235A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A073FE6-7605-4651-A78B-0F490E7235A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A073FE6-7605-4651-A78B-0F490E7235A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A073FE6-7605-4651-A78B-0F490E7235A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,7 @@ namespace GerenciadorDeJogos.Application.Interfaces
 {
     public interface ILoginServico
     {
-        Task<object> BuscarLoginAsync(UsuarioRequest usuario);
+        Task<object> BuscarLoginAsync(LoginRequest usuario);
+        
     }
 }

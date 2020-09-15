@@ -11,6 +11,7 @@ using GerenciadorDeJogos.Application.Seguranca.Configuracao;
 using GerenciadorDeJogos.Application.Servicos;
 using GerenciadorDeJogos.Infrastructure.Contexto;
 using GerenciadorDeJogos.Infrastructure.Repositorios;
+using GerenciadorDeJogos.Infrastructure.Repositorios.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -127,7 +128,9 @@ namespace GerenciadorDeJogos.Api
             services.AddScoped<IEmprestimoRepositorio, EmprestimoRepositorio>();
             services.AddScoped<IEmprestimoServico, EmprestimoServico>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+            services.AddScoped<IUsuarioServico, UsuarioServico>();
             services.AddScoped<ILoginServico, LoginServico>();
+            services.AddScoped(typeof(IRepositorioBase<>), typeof(RepositorioBase<>));
 
             #endregion
         }

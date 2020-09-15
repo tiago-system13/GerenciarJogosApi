@@ -8,6 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["GerenciadorDeJogos.Api/GerenciadorDeJogos.Api.csproj", "GerenciadorDeJogos.Api/"]
+COPY ["GerenciadorDeJogos.Infrastructure/GerenciadorDeJogos.Infrastructure.csproj", "GerenciadorDeJogos.Infrastructure/"]
+COPY ["GerenciadorDeJogos.Domain/GerenciadorDeJogos.Domain.csproj", "GerenciadorDeJogos.Domain/"]
+COPY ["GerenciadorDeJogos.Application/GerenciadorDeJogos.Application.csproj", "GerenciadorDeJogos.Application/"]
 RUN dotnet restore "GerenciadorDeJogos.Api/GerenciadorDeJogos.Api.csproj"
 COPY . .
 WORKDIR "/src/GerenciadorDeJogos.Api"

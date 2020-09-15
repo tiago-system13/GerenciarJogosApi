@@ -11,6 +11,11 @@ namespace GerenciadorDeJogos.Infrastructure.Mapeamentos
             builder.Property(x => x.Id)
                 .HasColumnName("usuario_id");
 
+            builder.Property(x => x.Nome)
+               .HasColumnName("nome")
+               .HasMaxLength(70)
+               .IsRequired();
+
             builder.Property(x => x.Login)
                .HasColumnName("login")
                .HasMaxLength(40)

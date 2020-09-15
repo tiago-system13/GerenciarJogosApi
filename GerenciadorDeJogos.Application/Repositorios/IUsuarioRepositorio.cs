@@ -2,7 +2,7 @@
 
 namespace GerenciadorDeJogos.Application.Repositorios
 {
-    public interface IUsuarioRepositorio
+    public interface IUsuarioRepositorio: IRepositorioBase<Usuario>
     {
         Usuario BuscarPorLogin(string login);
     }
