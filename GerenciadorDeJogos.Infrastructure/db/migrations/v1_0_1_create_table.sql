@@ -47,4 +47,9 @@ usuario_id CHAR (16)  not null PRIMARY KEY,
 nome varchar(70) not null,
 login varchar(40) not null,
 senha varchar(30) not null
-)
+);
+
+SET character_set_client = utf8;
+SET character_set_connection = utf8;
+SET character_set_results = utf8;
+SET collation_connection = utf8_general_ci;
