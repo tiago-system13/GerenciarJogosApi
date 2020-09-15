@@ -4,6 +4,6 @@ namespace GerenciadorDeJogos.Domain.Entidades.Base
 {
    public class Entidade
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 }

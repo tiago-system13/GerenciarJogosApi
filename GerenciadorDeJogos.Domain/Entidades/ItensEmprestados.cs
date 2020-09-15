@@ -5,9 +5,9 @@ namespace GerenciadorDeJogos.Domain.Entidades
 {
     public class ItensEmprestados: Entidade
     {
-        public Guid JogoId { get; set; }
+        public int JogoId { get; set; }
 
-        public Guid EmprestimoId { get; set; }
+        public int EmprestimoId { get; set; }
 
         public DateTime? DataDevolucao { get; set; }
 

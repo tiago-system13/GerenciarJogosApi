@@ -6,7 +6,7 @@ namespace GerenciadorDeJogos.Domain.Entidades
 {
     public class Emprestimo: Entidade
     {
-        public Guid AmigoId { get; set; }
+        public int AmigoId { get; set; }
 
         public DateTime DataEmprestimo { get; set; }
 

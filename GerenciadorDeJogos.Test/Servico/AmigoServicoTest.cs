@@ -54,7 +54,7 @@ namespace GerenciadorDeJogos.Test.Servico
             var amigoMock = GetAmigosMock().First();
             amigoMock.Nome = "João";
 
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(true);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(true);
             repositorioMock.Setup(a => a.Atualizar(It.IsAny<Amigo>())).Returns(amigoMock);
 
             var amigoRequest = CriarAmigoRequest("João");
@@ -74,7 +74,7 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var amigoMock = GetAmigosMock().First();
         
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(false);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(false);
            
             var amigoRequest = CriarAmigoRequest("João");
             amigoRequest.Id = amigoMock.Id;
@@ -92,13 +92,13 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var amigoMock = GetAmigosMock().First();
 
-            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<Guid>())).Returns(amigoMock);
+            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<int>())).Returns(amigoMock);
 
-            var amigoResult = servicoMock.BuscarPorIdAsync(It.IsAny<Guid>()).Result;
+            var amigoResult = servicoMock.BuscarPorIdAsync(It.IsAny<int>()).Result;
 
             Assert.NotNull(amigoResult);
             Assert.AreEqual(amigoMock.Nome, amigoResult.Nome);
-            repositorioMock.Verify(a => a.BuscarPorId(It.IsAny<Guid>()), Times.Once);
+            repositorioMock.Verify(a => a.BuscarPorId(It.IsAny<int>()), Times.Once);
         }
 
         [Test]
@@ -166,13 +166,13 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var amigoMock = GetAmigosMock().First();
 
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(true);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(true);
 
             var excluido = servicoMock.ExcluirAsync(amigoMock.Id).Result;
 
             Assert.NotNull(excluido);
             Assert.True(excluido);
-            repositorioMock.Verify(a => a.Excluir(It.IsAny<Guid>()), Times.Once);
+            repositorioMock.Verify(a => a.Excluir(It.IsAny<int>()), Times.Once);
         }
 
         [Test]
@@ -181,22 +181,22 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var amigoMock = GetAmigosMock().First();
 
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(false);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(false);
 
             var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.ExcluirAsync(amigoMock.Id));
 
             Assert.That(ex.Message, Is.EqualTo("Amigo Não Encontrado!"));
-            repositorioMock.Verify(a => a.Excluir(It.IsAny<Guid>()), Times.Never);
+            repositorioMock.Verify(a => a.Excluir(It.IsAny<int>()), Times.Never);
         }
 
         private List<Amigo> GetAmigosMock()
         {
             return new List<Amigo>()
             {
-                CriarAmigoMock(Guid.NewGuid(),"Tiago"),
-                CriarAmigoMock(Guid.NewGuid(),"Mário"),
-                CriarAmigoMock(Guid.NewGuid(),"André"),
-                CriarAmigoMock(Guid.NewGuid(),"Alisson")
+                CriarAmigoMock(1,"Tiago"),
+                CriarAmigoMock(2,"Mário"),
+                CriarAmigoMock(3,"André"),
+                CriarAmigoMock(4,"Alisson")
             };
         }
 
@@ -209,7 +209,7 @@ namespace GerenciadorDeJogos.Test.Servico
             };
         }
 
-        private Amigo CriarAmigoMock(Guid id, string nome)
+        private Amigo CriarAmigoMock(int id, string nome)
         {
             return new Amigo()
             {

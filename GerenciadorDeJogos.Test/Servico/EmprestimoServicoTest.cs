@@ -36,7 +36,7 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var emprestimoMock = GetEmprestimoMock().FirstOrDefault();
 
-            var emprestimoRequest = CriarEmprestimoRequest(emprestimoMock.Id,5, Guid.NewGuid());
+            var emprestimoRequest = CriarEmprestimoRequest(emprestimoMock.Id,5, 1);
 
             repositorioMock.Setup(a => a.Inserir(It.IsAny<Emprestimo>())).Returns(emprestimoMock);
 
@@ -54,7 +54,7 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var emprestimoMock = GetEmprestimoMock().Last();
 
-            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<Guid>())).Returns(emprestimoMock);
+            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<int>())).Returns(emprestimoMock);
 
             repositorioMock.Setup(a => a.Atualizar(It.IsAny<Emprestimo>())).Returns(emprestimoMock);
 
@@ -74,7 +74,7 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var emprestimoMock = GetEmprestimoMock().First();
 
-            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<Guid>())).Returns((Emprestimo)null);
+            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<int>())).Returns((Emprestimo)null);
 
             var devolucaoRequest = CriarDevolucaoRequest(emprestimoMock.Id, true, emprestimoMock.ItensEmprestados.Last().JogoId);
 
@@ -89,14 +89,14 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             return new List<Emprestimo>()
             {
-                CriarEmprestimoMock(Guid.NewGuid(),5,Guid.NewGuid()),
-                CriarEmprestimoMock(Guid.NewGuid(),8,Guid.NewGuid()),
-                CriarEmprestimoMock(Guid.NewGuid(),10,Guid.NewGuid(),true,DateTime.Now.AddDays(8)),
-                CriarEmprestimoMock(Guid.NewGuid(),7,Guid.NewGuid(),true,DateTime.Now.AddDays(7))
+                CriarEmprestimoMock(1,5,1),
+                CriarEmprestimoMock(1,8,1),
+                CriarEmprestimoMock(1,10,1,true,DateTime.Now.AddDays(8)),
+                CriarEmprestimoMock(1,7,1,true,DateTime.Now.AddDays(7))
             };
         }
 
-        private EmprestimoRequest CriarEmprestimoRequest(Guid emprestimoId,int quantidadeDias, Guid amigoId)
+        private EmprestimoRequest CriarEmprestimoRequest(int emprestimoId,int quantidadeDias, int amigoId)
         {
             return new EmprestimoRequest()
             {
@@ -112,7 +112,7 @@ namespace GerenciadorDeJogos.Test.Servico
             };
         }
 
-        private DevolucaoRequest CriarDevolucaoRequest(Guid emprestimoId, bool devolvido, Guid jogoId)
+        private DevolucaoRequest CriarDevolucaoRequest(int emprestimoId, bool devolvido, int jogoId)
         {
             return new DevolucaoRequest()
             {
@@ -124,17 +124,17 @@ namespace GerenciadorDeJogos.Test.Servico
             };
         }
 
-        private ItensEmprestadosRequest CriarItensEmprestadosRequest(Guid JogoId)
+        private ItensEmprestadosRequest CriarItensEmprestadosRequest(int JogoId)
         {
             return new ItensEmprestadosRequest()
             {
-                Id = Guid.NewGuid(),
+                Id =1,
                 JogoId = JogoId
             };
 
         }
 
-        private ItensDevolvidosRequest CriarItensDevolvidosRequest(Guid emprestimoId,Guid JogoId, bool? devolvido = null)
+        private ItensDevolvidosRequest CriarItensDevolvidosRequest(int emprestimoId,int JogoId, bool? devolvido = null)
         {
             return new ItensDevolvidosRequest()
             {
@@ -145,11 +145,11 @@ namespace GerenciadorDeJogos.Test.Servico
 
         }
 
-        private ItensEmprestados CriarItensEmprestadosMock(Guid JogoId, Guid emprestimoId, bool? devolvido = null, DateTime? dataDevolucao = null)
+        private ItensEmprestados CriarItensEmprestadosMock(int JogoId, int emprestimoId, bool? devolvido = null, DateTime? dataDevolucao = null)
         {
             return new ItensEmprestados()
             {
-                Id = Guid.NewGuid(),
+                Id =1,
                 JogoId = JogoId,
                 Devolvido = devolvido,
                 DataDevolucao = dataDevolucao,
@@ -158,10 +158,10 @@ namespace GerenciadorDeJogos.Test.Servico
 
         }
 
-        private Emprestimo CriarEmprestimoMock(Guid id, int quantidadeDias, Guid amigoId, bool? devolvido = null, DateTime? dataDevolucao = null)
+        private Emprestimo CriarEmprestimoMock(int id, int quantidadeDias, int amigoId, bool? devolvido = null, DateTime? dataDevolucao = null)
         {
 
-            var jogoId = Guid.NewGuid();
+            var jogoId = 1;
 
             return new Emprestimo()
             {

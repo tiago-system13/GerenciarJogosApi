@@ -31,8 +31,8 @@ namespace GerenciadorDeJogos.Api.Controller
         }
 
         [HttpGet]
-        [Route("{id:Guid}/amigo")]
-        public async Task<ActionResult<UsuarioResult>> ObterPorId(Guid id)
+        [Route("{id:int}/amigo")]
+        public async Task<ActionResult<UsuarioResult>> ObterPorId(int id)
         {
             var usuario = await _usuarioServico.BuscarPorIdAsync(id).ConfigureAwait(false);
             return Ok(usuario);
@@ -54,7 +54,7 @@ namespace GerenciadorDeJogos.Api.Controller
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> Deletar(Guid id)
+        public async Task<ActionResult<bool>> Deletar(int id)
         {
             var result = await (_usuarioServico.ExcluirAsync(id)).ConfigureAwait(false);
             return Ok(result);

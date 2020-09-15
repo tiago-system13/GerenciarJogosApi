@@ -37,7 +37,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.Atualizar(amigo)));
         }
 
-        public async Task<AmigoResult> BuscarPorIdAsync(Guid id)
+        public async Task<AmigoResult> BuscarPorIdAsync(int id)
         {
             return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.BuscarPorId(id)));
         }
@@ -54,7 +54,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(_mapper.Map<List<AmigoResult>>(amigos));
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(int id)
         {
             var ExisteAmigo = _amigoRepositorio.Existe(id);
 

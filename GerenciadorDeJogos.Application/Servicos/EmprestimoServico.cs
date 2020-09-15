@@ -23,12 +23,12 @@ namespace GerenciadorDeJogos.Application.Servicos
             _mapper = mapper;
         }
 
-        public async Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorAmigoAsync(Guid amigoId)
+        public async Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorAmigoAsync(int amigoId)
         {
            return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.BuscarEmprestimoNaoDevolvidoPorAmigo(amigoId)));
         }
 
-        public async Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorJogoAsync(Guid jogoId, Guid proprietarioId)
+        public async Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorJogoAsync(int jogoId, int proprietarioId)
         {
             return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.BuscarEmprestimoNaoDevolvidoPorJogo(jogoId, proprietarioId)));
         }
@@ -56,14 +56,13 @@ namespace GerenciadorDeJogos.Application.Servicos
         {
             var emprestimo = _mapper.Map<Emprestimo>(emprestimoRequest);
 
-            emprestimo.Id = Guid.NewGuid();
+            
             emprestimo.DataEmprestimo = DateTime.Now;
             emprestimo.DataPrevistaDeVolucao = CalcularDataPrevistaDevolucao(emprestimo);
 
             foreach (var item in emprestimo.ItensEmprestados)
             {
-                item.EmprestimoId = emprestimo.Id;
-                item.Id = Guid.NewGuid();
+                item.Emprestimo = emprestimo;
             }
 
            return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.Inserir(emprestimo)));

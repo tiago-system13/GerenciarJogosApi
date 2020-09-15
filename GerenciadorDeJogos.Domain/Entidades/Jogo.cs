@@ -8,7 +8,7 @@ namespace GerenciadorDeJogos.Domain.Entidades
     {
         public string Nome { get; set; }
 
-        public Guid ProprietarioId { get; set; }
+        public int ProprietarioId { get; set; }
 
         public Amigo Proprietario { get; set; }
 

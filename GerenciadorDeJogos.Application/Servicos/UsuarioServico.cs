@@ -35,12 +35,12 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(_mapper.Map<UsuarioResult>(_usuarioRepositorio.Atualizar(usuario)));
         }
 
-        public async Task<UsuarioResult> BuscarPorIdAsync(Guid id)
+        public async Task<UsuarioResult> BuscarPorIdAsync(int id)
         {
             return await Task.FromResult(_mapper.Map<UsuarioResult>(_usuarioRepositorio.BuscarPorId(id)));
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(int id)
         {
             var ExisteUsuario = _usuarioRepositorio.Existe(id);
 

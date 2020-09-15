@@ -13,9 +13,9 @@ namespace GerenciadorDeJogos.Application.Interfaces
 
         Task<EmprestimoResult> DevolverAsync(DevolucaoRequest devolucaoRequest);
 
-        Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorAmigoAsync(Guid amigoId);
+        Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorAmigoAsync(int amigoId);
 
-        Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorJogoAsync(Guid jogoId, Guid proprietarioId);
+        Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorJogoAsync(int jogoId, int proprietarioId);
 
         Task<ListaPaginavel<EmprestimoResult>> PesquisarEmprestimosAsync(PesquisaEmprestimoRequest pesquisaResquest);
     }

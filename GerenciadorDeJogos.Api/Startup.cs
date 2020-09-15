@@ -15,7 +15,6 @@ using GerenciadorDeJogos.Infrastructure.Repositorios.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,19 +22,24 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using MySql.Data.MySqlClient;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace GerenciadorDeJogos.Api
 {
     public class Startup
     {
+        private readonly ILogger _logger;
+
         public IConfiguration _configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -44,6 +48,9 @@ namespace GerenciadorDeJogos.Api
         {
             var connectionString = _configuration["MySqlConnection:MySqlConnectionString"];
             services.AddDbContext<JogosContexto>(options => options.UseMySql(connectionString));
+
+            //Adding Migrations Support
+            ExecuteMigrations(connectionString);
 
             var signingConfigurations = new SigningConfiguracao();
             services.AddSingleton(signingConfigurations);
@@ -97,7 +104,6 @@ namespace GerenciadorDeJogos.Api
                 options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
 
             })
-           .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
            .AddXmlSerializerFormatters();
 
             //Add Swagger Service
@@ -136,18 +142,13 @@ namespace GerenciadorDeJogos.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-                app.UseHttpsRedirection();
-            }
+
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+            app.UseHttpsRedirection();
+
 
             var supportedCultures = new[]
            {
@@ -183,13 +184,40 @@ namespace GerenciadorDeJogos.Api
             option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
 
-            //Adding map routing
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "DefaultApi",
-                    template: "{controller=Values}/{id?}");
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
+
+
+        }
+
+        private void ExecuteMigrations(string connectionString)
+        {
+                try
+                {
+                    var evolveConnection = new MySqlConnection(connectionString);
+
+                    var evolve = new Evolve.Evolve("evolve.json", evolveConnection, msg => _logger.LogInformation(msg))
+                    {
+                        Locations = new List<string> { "db/dataset", "db/migrations" },
+                        IsEraseDisabled = true,
+                    };
+
+                    evolve.Migrate();
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical("Database migration failed.", ex);
+                    throw;
+                }
+            
         }
     }
 }

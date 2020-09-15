@@ -5,7 +5,7 @@ namespace GerenciadorDeJogos.Application.Models.Request
 {
     public class EmprestimoRequest:ModelBase
     {
-        public Guid AmigoId { get; set; }
+        public int AmigoId { get; set; }
 
         public int QuantidadeDeDias { get; set; }
 

@@ -6,9 +6,9 @@ namespace GerenciadorDeJogos.Application.Repositorios
 {
     public interface IEmprestimoRepositorio : IRepositorioBase<Emprestimo>
     {
-        Emprestimo BuscarEmprestimoNaoDevolvidoPorAmigo(Guid amigoId);
+        Emprestimo BuscarEmprestimoNaoDevolvidoPorAmigo(int amigoId);
 
-        Emprestimo BuscarEmprestimoNaoDevolvidoPorJogo(Guid jogoId, Guid Proprietario);
+        Emprestimo BuscarEmprestimoNaoDevolvidoPorJogo(int jogoId, int Proprietario);
 
         ListaPaginavel<Emprestimo> PesquisarEmprestimos(PesquisaEmprestimo pesquisaEmprestimo);
     }

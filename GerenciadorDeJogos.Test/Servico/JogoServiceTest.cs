@@ -35,7 +35,7 @@ namespace GerenciadorDeJogos.Test.Servico
         [Test]
         public void Inserir_retornaJogoResult()
         {
-            var jogoRequest = CriarJogoRequest("Top Guia",Guid.NewGuid());
+            var jogoRequest = CriarJogoRequest("Top Guia",1);
 
             repositorioMock.Setup(a => a.Inserir(It.IsAny<Jogo>())).Returns(GetJogosMock().FirstOrDefault());
 
@@ -54,10 +54,10 @@ namespace GerenciadorDeJogos.Test.Servico
             var jogoMock = GetJogosMock().First();
             jogoMock.Nome = "Top Guia";
 
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(true);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(true);
             repositorioMock.Setup(a => a.Atualizar(It.IsAny<Jogo>())).Returns(jogoMock);
 
-            var jogoRequest = CriarJogoRequest("Top Guia", Guid.NewGuid());
+            var jogoRequest = CriarJogoRequest("Top Guia", 1);
             jogoRequest.Id = jogoMock.Id;
 
             var jogoResult = servicoMock.AtualizarAsync(jogoRequest).Result;
@@ -74,9 +74,9 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var jogoMock = GetJogosMock().First();
 
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(false);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(false);
 
-            var joRequest = CriarJogoRequest("Top Guia", Guid.NewGuid());
+            var joRequest = CriarJogoRequest("Top Guia", 1);
             joRequest.Id = jogoMock.Id;
 
             var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.AtualizarAsync(joRequest));
@@ -92,13 +92,13 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var jogoMock = GetJogosMock().First();
 
-            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<Guid>())).Returns(jogoMock);
+            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<int>())).Returns(jogoMock);
 
-            var jogoResult = servicoMock.BuscarPorIdAsync(It.IsAny<Guid>()).Result;
+            var jogoResult = servicoMock.BuscarPorIdAsync(It.IsAny<int>()).Result;
 
             Assert.NotNull(jogoResult);
             Assert.AreEqual(jogoMock.Nome, jogoResult.Nome);
-            repositorioMock.Verify(a => a.BuscarPorId(It.IsAny<Guid>()), Times.Once);
+            repositorioMock.Verify(a => a.BuscarPorId(It.IsAny<int>()), Times.Once);
         }
 
         [Test]
@@ -166,13 +166,13 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var jogoMock = GetJogosMock().First();
 
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(true);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(true);
 
             var excluido = servicoMock.ExcluirAsync(jogoMock.Id).Result;
 
             Assert.NotNull(excluido);
             Assert.True(excluido);
-            repositorioMock.Verify(a => a.Excluir(It.IsAny<Guid>()), Times.Once);
+            repositorioMock.Verify(a => a.Excluir(It.IsAny<int>()), Times.Once);
         }
 
         [Test]
@@ -181,26 +181,26 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var jogoMock = GetJogosMock().First();
 
-            repositorioMock.Setup(a => a.Existe(It.IsAny<Guid>())).Returns(false);
+            repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(false);
 
             var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.ExcluirAsync(jogoMock.Id));
 
             Assert.That(ex.Message, Is.EqualTo("Jogo Não Encontrado!"));
-            repositorioMock.Verify(a => a.Excluir(It.IsAny<Guid>()), Times.Never);
+            repositorioMock.Verify(a => a.Excluir(It.IsAny<int>()), Times.Never);
         }
 
         private List<Jogo> GetJogosMock()
         {
             return new List<Jogo>()
             {
-                CriarJogoMock(Guid.NewGuid(),"Top Guia",Guid.NewGuid()),
-                CriarJogoMock(Guid.NewGuid(),"Super Mário",Guid.NewGuid()),
-                CriarJogoMock(Guid.NewGuid(),"Fifa 2020",Guid.NewGuid()),
-                CriarJogoMock(Guid.NewGuid(),"Teken",Guid.NewGuid())
+                CriarJogoMock(1,"Top Guia",1),
+                CriarJogoMock(2,"Super Mário",1),
+                CriarJogoMock(3,"Fifa 2020",1),
+                CriarJogoMock(4,"Teken",1)
             };
         }
 
-        private JogoRequest CriarJogoRequest(string nome, Guid proprietarioId)
+        private JogoRequest CriarJogoRequest(string nome, int proprietarioId)
         {
             return new JogoRequest()
             {
@@ -209,7 +209,7 @@ namespace GerenciadorDeJogos.Test.Servico
             };
         }
 
-        private Jogo CriarJogoMock(Guid id, string nome, Guid proprietarioId)
+        private Jogo CriarJogoMock(int id, string nome, int proprietarioId)
         {
             return new Jogo()
             {

@@ -44,16 +44,16 @@ namespace GerenciadorDeJogos.Api.Controller
         }
 
         [HttpGet]
-        [Route("{id:Guid}/amigo/emprestimo")]
-        public async Task<ActionResult<JogoResult>> BuscarEmprestimoNaoDevolvidoPorAmigo(Guid id)
+        [Route("{id:int}/amigo/emprestimo")]
+        public async Task<ActionResult<JogoResult>> BuscarEmprestimoNaoDevolvidoPorAmigo(int id)
         {
             var amigo = await _emprestimoServico.BuscarEmprestimoNaoDevolvidoPorAmigoAsync(id).ConfigureAwait(false);
             return Ok(amigo);
         }
 
         [HttpGet]
-        [Route("{jogoId:Guid}/jogo/{amigoId:Guid}/amigo/emprestimo")]
-        public async Task<ActionResult<JogoResult>> BuscarEmprestimoNaoDevolvido(Guid jogoId, Guid amigoId)
+        [Route("{jogoId:int}/jogo/{amigoId:int}/amigo/emprestimo")]
+        public async Task<ActionResult<JogoResult>> BuscarEmprestimoNaoDevolvido(int jogoId, int amigoId)
         {
             var amigo = await _emprestimoServico.BuscarEmprestimoNaoDevolvidoPorJogoAsync(jogoId, amigoId).ConfigureAwait(false);
             return Ok(amigo);

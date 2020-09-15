@@ -8,6 +8,8 @@ namespace GerenciadorDeJogos.Infrastructure.Mapeamentos
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
+            builder.HasKey(x => x.Id);
+
             builder.Property(x => x.Id)
                 .HasColumnName("usuario_id");
 

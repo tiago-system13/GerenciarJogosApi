@@ -1,1 +1,1 @@
-for i in `find /home/database/ -name "*.sql" | sort --version-sort`; do mysql -udocker -pdocker docker_to_aws_with_dotnet < $i; done;
+for i in `find /home/database/ -name "*.sql" | sort --version-sort`; do mysql -ujogo_user -pjogo@123 gerenciar-jogos < $i; done;

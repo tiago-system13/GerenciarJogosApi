@@ -1,1 +1,1 @@
-insert into tb_usuario values (UUID(),'Tiago','tiago_teste','teste@2020');
+insert into tb_usuario values ('Admin','admin','admin@2020');

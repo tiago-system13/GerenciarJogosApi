@@ -6,7 +6,7 @@ namespace GerenciadorDeJogos.Application.Models.Result
 {
     public class EmprestimoResult: ModelBase
     {
-        public Guid AmigoId { get; set; }
+        public int AmigoId { get; set; }
 
         public string NomeAmigo { get; set; }
 

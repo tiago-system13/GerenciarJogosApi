@@ -9,9 +9,9 @@ namespace GerenciadorDeJogos.Application.Interfaces
     public interface IUsuarioServico
     {
         Task<UsuarioResult> InserirAsync(UsuarioRequest usuarioRequest);
-        Task<UsuarioResult> BuscarPorIdAsync(Guid id);
+        Task<UsuarioResult> BuscarPorIdAsync(int id);
         Task<UsuarioResult> AtualizarAsync(UsuarioRequest usuarioRequest);
-        Task<bool> ExcluirAsync(Guid id);
+        Task<bool> ExcluirAsync(int id);
         Task<ListaPaginavel<UsuarioResult>> PesquisarAsync(PesquisaResquest pesquisa);
     }
 }

@@ -19,12 +19,12 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios
             return ListarTodos().Include(i => i.ItensEmprestados).ThenInclude(j => j.Jogo);
         }
 
-        public Emprestimo BuscarEmprestimoNaoDevolvidoPorAmigo(Guid amigoId)
+        public Emprestimo BuscarEmprestimoNaoDevolvidoPorAmigo(int amigoId)
         {
             return Query().FirstOrDefault(e => e.AmigoId == amigoId && e.ItensEmprestados.Any(item => (item.Devolvido == null || item.Devolvido == false)));
         }
 
-        public Emprestimo BuscarEmprestimoNaoDevolvidoPorJogo(Guid jogoId, Guid proprietarioId)
+        public Emprestimo BuscarEmprestimoNaoDevolvidoPorJogo(int jogoId, int proprietarioId)
         {
             return Query().FirstOrDefault(e => e.ItensEmprestados.Any(item=> item.JogoId == jogoId && item.Jogo.ProprietarioId == proprietarioId && (item.Devolvido == null || item.Devolvido == false)));
         }

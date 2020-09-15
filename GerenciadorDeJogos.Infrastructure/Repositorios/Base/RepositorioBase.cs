@@ -38,7 +38,7 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios.Base
             }
         }
 
-        public void Excluir(Guid id)
+        public void Excluir(int id)
         {
             var result = dataset.SingleOrDefault(i => i.Id.Equals(id));
             try
@@ -55,7 +55,7 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios.Base
             }
         }
 
-        public bool Existe(Guid id)
+        public bool Existe(int id)
         {
             return dataset.Any(b => b.Id.Equals(id));
         }
@@ -65,7 +65,7 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios.Base
             return dataset.AsNoTracking();
         }
 
-        public T BuscarPorId(Guid id, params Expression<Func<T, object>>[] incluindoPropriedades)
+        public T BuscarPorId(int id, params Expression<Func<T, object>>[] incluindoPropriedades)
         {
             IQueryable<T> query;
 
