@@ -11,13 +11,13 @@ services:
     ports:
       - "44331:80"
     links:
-      - db
+      - db_jogo
     depends_on:
-      - db
+      - db_jogo
     networks:
       - gerenciar-jogo-network   
    
-  db:
+  db_jogo:
     image: gerenciar-jogo-dotnet-mysql-db
     command: mysqld --default-authentication-plugin=mysql_native_password
     build:
@@ -25,12 +25,12 @@ services:
       dockerfile: GerenciadorDeJogos.Infrastructure/db/Dockerfile
     environment:
       TZ: America/Sao_Paulo
-      MYSQL_ROOT_PASSWORD: jogo@10
-      MYSQL_USER: user_jogo
-      MYSQL_PASSWORD: jogo@10
-      MYSQL_DATABASE: gerenciar_jogos
+      MYSQL_ROOT_PASSWORD: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_DATABASE: docker_to_aws_with_dotnet
     ports:
-      - "3308:3306"
+      - "3307:3306"
     networks:
       - gerenciar-jogo-network
 
