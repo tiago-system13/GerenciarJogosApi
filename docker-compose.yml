@@ -30,7 +30,7 @@ services:
       MYSQL_PASSWORD: jogo@123
       MYSQL_DATABASE: gerenciar-jogos
     ports:
-      - "3301:3306"
+      - "3300:3306"
     networks:
       - gerenciar-jogo-network
 
