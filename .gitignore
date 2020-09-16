@@ -9,3 +9,16 @@
 /obj/Docker
 /GerenciadorDeJogos.Infrastructure/obj
 /GerenciadorDeJogos.Application/obj
+/.vs
+/bin/Debug
+/db/obj/Docker
+/GerenciadorDeJogos.Api/bin/Debug
+/GerenciadorDeJogos.Application/bin/Debug
+/GerenciadorDeJogos.Domain/bin/Debug
+/GerenciadorDeJogos.Infrastructure/bin/Debug
+/GerenciadorDeJogos.Infrastructure/db/obj/Docker
+/GerenciadorDeJogos.Test/bin/Debug/netcoreapp2.2
+/GerenciadorDeJogos.Test/bin/Debug/netcoreapp3.1/cs
+/GerenciadorDeJogos.Test/bin/Debug/netcoreapp3.1/de
+/GerenciadorDeJogos.Test/bin/Debug/netcoreapp3.1
+/obj/Debug
