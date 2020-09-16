@@ -8,11 +8,11 @@ jobs:
       - run:
           name: Restore
           command: dotnet restore
-          working_directory: GerenciadorDeJogos/GerenciadorDeJogos.Api
+          working_directory: GerenciadorDeJogos.Api
       - run:
           name: Build
           command: dotnet build -c Release
-          working_directory: GerenciadorDeJogos/GerenciadorDeJogos.Api
+          working_directory: GerenciadorDeJogos.Api
       - run:
           name: Running Tests
           command: dotnet test
