@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs/GerenciadorDeJogos
+/GerenciadorDeJogos.Api/obj
+/GerenciadorDeJogos.Domain/obj
+/GerenciadorDeJogos.Test/obj
+/obj/Docker
+/GerenciadorDeJogos.Infrastructure/obj
+/GerenciadorDeJogos.Application/obj
