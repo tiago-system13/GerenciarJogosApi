@@ -2,7 +2,7 @@
 
 namespace GerenciadorDeJogos.Application.Models.Request
 {
-    public class EmprestimoRequest
+    public class EmprestimoRequest:ModelBase
     {
         public int AmigoId { get; set; }
 

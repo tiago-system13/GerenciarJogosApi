@@ -1,7 +1,0 @@
-{
-  "Evolve.Driver": "MySQL.Data",
-  "Evolve.ConnectionString": "Server=127.0.0.1;Port=3306;Database=gerenciarjogos;Uid=root;Pwd=RootPassword;SslMode=none;",
-  "Evolve.Locations": "127.0.0.1",
-  "Evolve.Command": "migrate",
-  "Evolve.Placeholder.table4": "table_4"
-}

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using GerenciadorDeJogos.Application.Exceptions;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
 using GerenciadorDeJogos.Application.Models.Result;
 using GerenciadorDeJogos.Application.Repositorios;
+using GerenciadorDeJogos.Application.Validations;
 using GerenciadorDeJogos.Domain.Entidades;
 using GerenciadorDeJogos.Domain.Entidades.Base;
 using System;
@@ -29,10 +31,11 @@ namespace GerenciadorDeJogos.Application.Servicos
             
             if (!ExisteAmigo)
             {
-                throw new ArgumentException("Amigo Não Encontrado!");
+                throw new NegocioException("Amigo Não Encontrado!");
             }
 
             var amigo = _mapper.Map<Amigo>(amigoRequest);
+            ValidarAmigo(amigo);
 
             return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.Atualizar(amigo)));
         }
@@ -60,7 +63,7 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             if (!ExisteAmigo)
             {
-                throw new ArgumentException("Amigo Não Encontrado!");
+                throw new NegocioException("Amigo Não Encontrado!");
             }
 
             _amigoRepositorio.Excluir(id);
@@ -71,6 +74,7 @@ namespace GerenciadorDeJogos.Application.Servicos
         public async Task<AmigoResult> InserirAsync(AmigoRequest amigoRequest)
         {
             var amigo = _mapper.Map<Amigo>(amigoRequest);
+            ValidarAmigo(amigo);
 
             return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.Inserir(amigo)));
         }
@@ -89,6 +93,12 @@ namespace GerenciadorDeJogos.Application.Servicos
             var resultadoPesquisa = query.ParaListaPaginavel(pesquisa.IndiceDePagina, pesquisa.RegistrosPorPagina, pesquisa.Ordenacao, x => x.Nome);
            
             return await Task.FromResult(_mapper.Map<ListaPaginavel<AmigoResult>>(resultadoPesquisa));
+        }
+
+        private void ValidarAmigo(Amigo amigo)
+        {
+            var amigoValidate = new AmigoValidation();
+            new FluentResultAdapter().VerificaErros(amigoValidate.Validate(amigo));
         }
     }
 }

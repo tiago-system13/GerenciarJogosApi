@@ -1,7 +1,9 @@
 ﻿using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
+using GerenciadorDeJogos.Application.Models.Result;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace GerenciadorDeJogos.Api.Controller
 {
@@ -18,10 +20,10 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [AllowAnonymous]
         [HttpPost]
-        public object Post([FromBody]LoginRequest user)
+        public Task<AutenticacaoResult> Post([FromBody]LoginRequest user)
         {
-            if (user == null) return BadRequest();
-            return _loginServico.BuscarLoginAsync(user).Result; 
+            return _loginServico.BuscarLoginAsync(user);
+            
         }
     }
 }

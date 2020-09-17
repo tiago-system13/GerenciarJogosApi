@@ -1,7 +1,9 @@
 ﻿using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
+using GerenciadorDeJogos.Application.Models.Result;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Seguranca.Configuracao;
+using GerenciadorDeJogos.Application.Validations;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,14 +25,18 @@ namespace GerenciadorDeJogos.Application.Servicos
             _tokenConfiguracao = tokenConfiguracao;
         }
 
-        public async Task<object> BuscarLoginAsync(LoginRequest usuario)
+        public async Task<AutenticacaoResult> BuscarLoginAsync(LoginRequest usuario)
         {
+            ValidarLogin(usuario);
+
             bool credentialsIsValid = false;
             if (usuario != null && !string.IsNullOrWhiteSpace(usuario.Login))
             {
                 var baseUser = _repositorio.BuscarPorLogin(usuario.Login);
+
                 credentialsIsValid = (baseUser != null && usuario.Login.Equals(baseUser.Login) && usuario.Senha.Equals(baseUser.Senha));
             }
+
             if (credentialsIsValid)
             {
                 ClaimsIdentity identity = new ClaimsIdentity(
@@ -73,25 +79,31 @@ namespace GerenciadorDeJogos.Application.Servicos
             return token;
         }
 
-        private object ExceptionObject()
+        private AutenticacaoResult ExceptionObject()
         {
-            return new
+            return new AutenticacaoResult
             {
-                autenticated = false,
-                message = "Failed to autheticate"
+                Autenticated = false,
+                Message = "Failed to autheticate"
             };
         }
 
-        private object SuccessObject(DateTime createDate, DateTime expirationDate, string token)
+        private AutenticacaoResult SuccessObject(DateTime createDate, DateTime expirationDate, string token)
         {
-            return new
+            return new AutenticacaoResult
             {
-                autenticated = true,
-                created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                accessToken = token,
-                message = "OK"
+                Autenticated = true,
+                Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                AccessToken = token,
+                Message = "OK"
             };
+        }
+
+        private void ValidarLogin(LoginRequest login)
+        {
+            var loginValidate = new LoginValidation();
+            new FluentResultAdapter().VerificaErros(loginValidate.Validate(login));
         }
     }
 }

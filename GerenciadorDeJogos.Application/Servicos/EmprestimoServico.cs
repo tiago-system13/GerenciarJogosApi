@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GerenciadorDeJogos.Application.Exceptions;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
 using GerenciadorDeJogos.Application.Models.Result;
@@ -65,7 +66,7 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             if (emprestimoDb == null)
             {
-                throw new ArgumentException("Emprestimo não encontrado!");
+                throw new NegocioException("Emprestimo não encontrado!");
             }
 
             EfetivarDevolucao(emprestimoDb.ItensEmprestados, devolucaoRequest.ItensDevolvidos);

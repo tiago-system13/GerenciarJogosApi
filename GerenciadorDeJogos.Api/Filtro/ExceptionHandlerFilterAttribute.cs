@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GerenciadorDeJogos.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace GerenciadorDeJogos.Api.Filtro
@@ -9,21 +11,32 @@ namespace GerenciadorDeJogos.Api.Filtro
     {
         public override void OnException(ExceptionContext context)
         {
-            if (context.Exception is ArgumentException)
+            if (context.Exception is NegocioException)
             {
                 var statusCode = (int)HttpStatusCode.BadRequest;
 
                 context.HttpContext.Response.ContentType = "application/json";
                 context.HttpContext.Response.StatusCode = statusCode;
 
-                if (context.Exception is ArgumentException)
+                if (context.Exception is NegocioException)
                 {
-                    var businessException = (ArgumentException)context.Exception;
+                    var businessException = (NegocioException)context.Exception;
 
-                    context.Result = new JsonResult(new
+                    if (businessException?.Problema?.Erros.Count > 0)
                     {
-                        error = businessException?.Message
-                    });
+
+                        context.Result = new JsonResult(new
+                        {
+                            error = businessException.Problema.Erros
+                        });
+                    }
+                    else
+                    {
+                        context.Result = new JsonResult(new
+                        {
+                            error = businessException?.Message
+                        });
+                    }
                 }
 
                 return;

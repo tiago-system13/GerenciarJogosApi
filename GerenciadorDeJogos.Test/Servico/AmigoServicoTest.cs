@@ -1,4 +1,5 @@
 ﻿using GerenciadorDeJogos.Application.AutoMapper;
+using GerenciadorDeJogos.Application.Exceptions;
 using GerenciadorDeJogos.Application.Models.Request;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Servicos;
@@ -79,7 +80,7 @@ namespace GerenciadorDeJogos.Test.Servico
             var amigoRequest = CriarAmigoRequest("João");
             amigoRequest.Id = amigoMock.Id;
 
-            var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.AtualizarAsync(amigoRequest));
+            var ex = Assert.ThrowsAsync<NegocioException>(() => servicoMock.AtualizarAsync(amigoRequest));
      
             Assert.That(ex.Message, Is.EqualTo("Amigo Não Encontrado!"));
             repositorioMock.Verify(a => a.Atualizar(It.IsAny<Amigo>()), Times.Never);
@@ -183,7 +184,7 @@ namespace GerenciadorDeJogos.Test.Servico
 
             repositorioMock.Setup(a => a.Existe(It.IsAny<int>())).Returns(false);
 
-            var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.ExcluirAsync(amigoMock.Id));
+            var ex = Assert.ThrowsAsync<NegocioException>(() => servicoMock.ExcluirAsync(amigoMock.Id));
 
             Assert.That(ex.Message, Is.EqualTo("Amigo Não Encontrado!"));
             repositorioMock.Verify(a => a.Excluir(It.IsAny<int>()), Times.Never);

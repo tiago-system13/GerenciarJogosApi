@@ -3,6 +3,7 @@ using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
 using GerenciadorDeJogos.Application.Models.Result;
 using GerenciadorDeJogos.Application.Repositorios;
+using GerenciadorDeJogos.Application.Validations;
 using GerenciadorDeJogos.Domain.Entidades;
 using GerenciadorDeJogos.Domain.Entidades.Base;
 using System;
@@ -32,6 +33,8 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             var usuario = _mapper.Map<Usuario>(usuarioRequest);
 
+            ValidarUsuario(usuario);
+
             return await Task.FromResult(_mapper.Map<UsuarioResult>(_usuarioRepositorio.Atualizar(usuario)));
         }
 
@@ -57,6 +60,7 @@ namespace GerenciadorDeJogos.Application.Servicos
         public async Task<UsuarioResult> InserirAsync(UsuarioRequest usuarioRequest)
         {
             var usuario = _mapper.Map<Usuario>(usuarioRequest);
+            ValidarUsuario(usuario);
 
             return await Task.FromResult(_mapper.Map<UsuarioResult>(_usuarioRepositorio.Inserir(usuario)));
         }
@@ -75,6 +79,12 @@ namespace GerenciadorDeJogos.Application.Servicos
             var resultadoPesquisa = query.ParaListaPaginavel(pesquisa.IndiceDePagina, pesquisa.RegistrosPorPagina, pesquisa.Ordenacao, x => x.Nome);
 
             return await Task.FromResult(_mapper.Map<ListaPaginavel<UsuarioResult>>(resultadoPesquisa));
+        }
+
+        private void ValidarUsuario(Usuario usuario)
+        {
+            var jogoValidate = new UsuarioValidation();
+            new FluentResultAdapter().VerificaErros(jogoValidate.Validate(usuario));
         }
     }
 }
