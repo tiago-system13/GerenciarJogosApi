@@ -50,7 +50,7 @@ namespace GerenciadorDeJogos.Application.Servicos
                     );
 
                 DateTime createDate = DateTime.Now;
-                DateTime expirationDate = createDate.AddMinutes(Convert.ToDouble(EnvConstants.TempoExpiracaoToken));
+                DateTime expirationDate = createDate.AddMinutes(Convert.ToDouble(EnvConstants.TEMPOEXPIRACAOTOKEN));
 
                 var handler = new JwtSecurityTokenHandler();
                 string token = CreateToken(identity, createDate, expirationDate, handler);
@@ -68,7 +68,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             var securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {
                 Issuer = EnvConstants.ISSUER,
-                Audience = EnvConstants.Audience,
+                Audience = EnvConstants.AUDIENCE,
                 SigningCredentials = _signingConfiguracao.SigningCredentials,
                 Subject = identity,
                 NotBefore = createDate,
