@@ -8,12 +8,12 @@
       - run:
           name: Restore
           command: dotnet restore
-          working_directory: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Api
+          working_directory: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Api/GerenciadorDeJogos.Api.csproj
       - run:
           name: Build
           command: dotnet build -c Release
-          working_directory: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Api
+          working_directory: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Api/GerenciadorDeJogos.Api.csproj
       - run:
           name: Running Tests
           command: dotnet test
-          working_directory: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Test
+          working_directory: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Test/GerenciadorDeJogos.Test.csproj
