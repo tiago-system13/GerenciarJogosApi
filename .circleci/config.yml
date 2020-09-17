@@ -16,6 +16,10 @@ jobs:
       - run:
           name: "Install project dependencies"
           command: dotnet.exe restore
+      - save_cache:
+          paths:
+            - C:\Users\Tiago.Santana\source\repos\GerenciadorDeJogos\GerenciadorDeJogos.Api\.nuget\packages
+          key: dotnet-packages-v1-{{ "C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Api/GerenciadorDeJogos.Api.csproj" }}
       - run:
           name: "Run Application Tests"
           command: dotnet.exe test -v n --results-directory:test_coverage --collect:"Code Coverage"
@@ -23,7 +27,7 @@ jobs:
           name: "Print Working Directory"
           command: pwd
       - store_artifacts:
-          path: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Test/GerenciadorDeJogos.Test.csproj
+          path: C:/Users/Tiago.Santana/source/repos/GerenciadorDeJogos/GerenciadorDeJogos.Test/coveragereport.opencover.xml
   build:
     description: Build application with Release configuration
     executor:
