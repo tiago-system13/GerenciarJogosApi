@@ -29,7 +29,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             if (usuario != null && !string.IsNullOrWhiteSpace(usuario.Login))
             {
                 var baseUser = _repositorio.BuscarPorLogin(usuario.Login);
-                credentialsIsValid = (baseUser != null && usuario.Login == baseUser.Login && usuario.Senha == baseUser.Senha);
+                credentialsIsValid = (baseUser != null && usuario.Login.Equals(baseUser.Login) && usuario.Senha.Equals(baseUser.Senha));
             }
             if (credentialsIsValid)
             {
@@ -43,7 +43,7 @@ namespace GerenciadorDeJogos.Application.Servicos
                     );
 
                 DateTime createDate = DateTime.Now;
-                DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguracao.Seconds);
+                DateTime expirationDate = createDate.AddMinutes(30);
 
                 var handler = new JwtSecurityTokenHandler();
                 string token = CreateToken(identity, createDate, expirationDate, handler);
@@ -60,8 +60,8 @@ namespace GerenciadorDeJogos.Application.Servicos
         {
             var securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {
-                Issuer = _tokenConfiguracao.Issuer,
-                Audience = _tokenConfiguracao.Audience,
+                Issuer = "Teste",
+                Audience = "Aud",
                 SigningCredentials = _signingConfiguracao.SigningCredentials,
                 Subject = identity,
                 NotBefore = createDate,
@@ -69,6 +69,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             });
 
             var token = handler.WriteToken(securityToken);
+            
             return token;
         }
 

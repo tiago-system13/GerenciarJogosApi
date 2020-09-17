@@ -14,6 +14,6 @@ namespace GerenciadorDeJogos.Application.Models.Result
 
         public DateTime DataPrevistaDeVolucao { get; set; }
 
-        List<ItensEmprestadosResult> ItensEmprestados { get; set; }
+        public List<ItensEmprestadosResult> ItensEmprestados { get; set; }
     }
 }

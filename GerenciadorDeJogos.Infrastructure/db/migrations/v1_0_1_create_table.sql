@@ -1,15 +1,14 @@
-
+use gerenciarjogos;
 create table tb_amigo(
 amigo_id int auto_increment not null PRIMARY KEY,
 nome_amigo varchar(40) not null,
 telefone_amigo varchar(20) not null
-
 );
 
 create table tb_jogo(
 jogo_id int auto_increment not null PRIMARY KEY,
 nome_jogo varchar(40) not null,
-amigo_id varchar(36) not null,
+amigo_id int not null,
 FOREIGN KEY (amigo_id)
         REFERENCES tb_amigo (amigo_id)
         ON UPDATE RESTRICT ON DELETE CASCADE

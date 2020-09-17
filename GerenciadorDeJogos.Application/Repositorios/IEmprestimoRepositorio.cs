@@ -1,6 +1,5 @@
 ﻿using GerenciadorDeJogos.Domain.Entidades;
-using GerenciadorDeJogos.Domain.Entidades.Base;
-using System;
+using System.Collections.Generic;
 
 namespace GerenciadorDeJogos.Application.Repositorios
 {
@@ -10,6 +9,7 @@ namespace GerenciadorDeJogos.Application.Repositorios
 
         Emprestimo BuscarEmprestimoNaoDevolvidoPorJogo(int jogoId, int Proprietario);
 
-        ListaPaginavel<Emprestimo> PesquisarEmprestimos(PesquisaEmprestimo pesquisaEmprestimo);
+        Emprestimo Devolver(Emprestimo emprestimo);
+        
     }
 }

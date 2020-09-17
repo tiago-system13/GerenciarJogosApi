@@ -66,11 +66,12 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios.Base
         }
 
         public T BuscarPorId(int id, params Expression<Func<T, object>>[] incluindoPropriedades)
+        {           
+            return AdicionarInclude(dataset.AsNoTracking(), incluindoPropriedades).SingleOrDefault(p => p.Id.Equals(id));           
+        }
+
+        private IQueryable<T> AdicionarInclude(IQueryable<T> query,params Expression<Func<T, object>>[] incluindoPropriedades)
         {
-            IQueryable<T> query;
-
-            query = dataset.AsNoTracking();
-
             if (incluindoPropriedades != null)
             {
                 foreach (var item in incluindoPropriedades)
@@ -79,14 +80,14 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios.Base
                 }
             }
 
-            return query.SingleOrDefault(p => p.Id.Equals(id));
+            return query;
         }
 
         public T Atualizar(T item)
         {
             if (!Existe(item.Id)) return null;
 
-            var result = dataset.SingleOrDefault(b => b.Id == item.Id);
+            var result = dataset.FirstOrDefault(b => b.Id == item.Id);
             if (result != null)
             {
                 try

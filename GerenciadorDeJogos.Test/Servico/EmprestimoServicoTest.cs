@@ -3,11 +3,13 @@ using GerenciadorDeJogos.Application.Models.Request;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Servicos;
 using GerenciadorDeJogos.Domain.Entidades;
+using Microsoft.VisualBasic.CompilerServices;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace GerenciadorDeJogos.Test.Servico
 {
@@ -54,15 +56,15 @@ namespace GerenciadorDeJogos.Test.Servico
         {
             var emprestimoMock = GetEmprestimoMock().Last();
 
-            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<int>())).Returns(emprestimoMock);
+            repositorioMock.Setup(a => a.BuscarPorId(It.IsAny<int>(), It.IsAny<Expression<Func<Emprestimo, object>>>())).Returns(emprestimoMock);
 
-            repositorioMock.Setup(a => a.Atualizar(It.IsAny<Emprestimo>())).Returns(emprestimoMock);
+            repositorioMock.Setup(a => a.Devolver(It.IsAny<Emprestimo>())).Returns(emprestimoMock);
 
             var devolucaoRequest = CriarDevolucaoRequest(emprestimoMock.Id, true , emprestimoMock.ItensEmprestados.Last().JogoId);
 
             var devolucaoResult = servicoMock.DevolverAsync(devolucaoRequest).Result;
 
-            repositorioMock.Verify(a => a.Atualizar(It.IsAny<Emprestimo>()), Times.Once);
+            repositorioMock.Verify(a => a.Devolver(It.IsAny<Emprestimo>()), Times.Once);
 
             Assert.NotNull(devolucaoResult);
             Assert.AreEqual(emprestimoMock.AmigoId, devolucaoResult.AmigoId);
@@ -81,7 +83,7 @@ namespace GerenciadorDeJogos.Test.Servico
             var ex = Assert.ThrowsAsync<ArgumentException>(() => servicoMock.DevolverAsync(devolucaoRequest));
 
             Assert.That(ex.Message, Is.EqualTo("Emprestimo não encontrado!"));
-            repositorioMock.Verify(a => a.Atualizar(It.IsAny<Emprestimo>()), Times.Never);
+            repositorioMock.Verify(a => a.Devolver(It.IsAny<Emprestimo>()), Times.Never);
 
         }
 

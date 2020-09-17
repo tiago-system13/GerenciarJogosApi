@@ -11,14 +11,15 @@ namespace GerenciadorDeJogos.Infrastructure.Mapeamentos
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .HasColumnName("amigo_id");
+                .HasColumnName("amigo_id")
+                .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Nome)
                .HasColumnName("nome_amigo")
                .HasMaxLength(70)
                .IsRequired();
 
-            builder.Property(x => x.Nome)
+            builder.Property(x => x.Telefone)
                .HasColumnName("telefone_amigo")
                .HasMaxLength(20)
                .IsRequired();

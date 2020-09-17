@@ -7,6 +7,7 @@ namespace GerenciadorDeJogos.Application.Seguranca.Configuracao
     {
         public SecurityKey Key { get; }
         public SigningCredentials SigningCredentials { get; }
+        public RSAParameters RSAPublicParameters { get; private set; }
 
         public SigningConfiguracao()
         {

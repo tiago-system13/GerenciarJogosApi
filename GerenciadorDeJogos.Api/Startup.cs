@@ -25,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 using MySql.Data.MySqlClient;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -32,14 +33,13 @@ namespace GerenciadorDeJogos.Api
 {
     public class Startup
     {
-        private readonly ILogger _logger;
 
         public IConfiguration _configuration { get; }
 
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
-            _logger = logger;
+           
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -48,9 +48,6 @@ namespace GerenciadorDeJogos.Api
         {
             var connectionString = _configuration["MySqlConnection:MySqlConnectionString"];
             services.AddDbContext<JogosContexto>(options => options.UseMySql(connectionString));
-
-            //Adding Migrations Support
-            ExecuteMigrations(connectionString);
 
             var signingConfigurations = new SigningConfiguracao();
             services.AddSingleton(signingConfigurations);
@@ -109,17 +106,40 @@ namespace GerenciadorDeJogos.Api
             //Add Swagger Service
             services.AddSwaggerGen(s =>
             {
-                s.SwaggerDoc("v1", new Info { Title = "Gerenciar Jogos API", Version = "V1" });
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "Gerenciar Jogos API", Version = "V1" });
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                         Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                    },
+                    Scheme = "oauth2",
+                    Name = "Bearer",
+                    In = ParameterLocation.Header,
+
+                },
+                new List<string>()
+            }
+        });
+
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
+            services.AddHealthChecks();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -195,29 +215,6 @@ namespace GerenciadorDeJogos.Api
             });
 
 
-        }
-
-        private void ExecuteMigrations(string connectionString)
-        {
-                try
-                {
-                    var evolveConnection = new MySqlConnection(connectionString);
-
-                    var evolve = new Evolve.Evolve("evolve.json", evolveConnection, msg => _logger.LogInformation(msg))
-                    {
-                        Locations = new List<string> { "db/dataset", "db/migrations" },
-                        IsEraseDisabled = true,
-                    };
-
-                    evolve.Migrate();
-
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogCritical("Database migration failed.", ex);
-                    throw;
-                }
-            
         }
     }
 }

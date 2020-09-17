@@ -5,6 +5,7 @@ using GerenciadorDeJogos.Infrastructure.Contexto;
 using GerenciadorDeJogos.Infrastructure.Repositorios.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GerenciadorDeJogos.Infrastructure.Repositorios
@@ -29,28 +30,12 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios
             return Query().FirstOrDefault(e => e.ItensEmprestados.Any(item=> item.JogoId == jogoId && item.Jogo.ProprietarioId == proprietarioId && (item.Devolvido == null || item.Devolvido == false)));
         }
 
-        public ListaPaginavel<Emprestimo> PesquisarEmprestimos(PesquisaEmprestimo pesquisaEmprestimo)
+        public Emprestimo Devolver(Emprestimo emprestimo)
         {
-            IQueryable<Emprestimo> query;
+           _context.ItensEmprestados.UpdateRange(emprestimo.ItensEmprestados);
+            Salvar();
 
-            query = Query().Include(a=> a.Amigo);
-
-            if (pesquisaEmprestimo.AmigoId != null)
-            {
-                query = query.Where(x => x.AmigoId == pesquisaEmprestimo.AmigoId);
-            }
-
-            if (pesquisaEmprestimo.JogoId != null)
-            {
-                query = query.Where(x => x.ItensEmprestados.Any(item => item.JogoId == pesquisaEmprestimo.JogoId));
-            }
-
-            if (pesquisaEmprestimo.DataEmprestimo != null)
-            {
-                query = query.Where(x => x.DataEmprestimo == pesquisaEmprestimo.DataEmprestimo);
-            }
-
-            return query.ParaListaPaginavel(pesquisaEmprestimo.IndiceDePagina, pesquisaEmprestimo.RegistrosPorPagina, pesquisaEmprestimo.Ordenacao, x => x.DataEmprestimo);
+            return emprestimo;
         }
     }
 }

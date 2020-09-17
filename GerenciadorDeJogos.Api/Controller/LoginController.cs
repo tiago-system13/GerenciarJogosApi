@@ -21,7 +21,7 @@ namespace GerenciadorDeJogos.Api.Controller
         public object Post([FromBody]LoginRequest user)
         {
             if (user == null) return BadRequest();
-            return _loginServico.BuscarLoginAsync(user).ConfigureAwait(false); 
+            return _loginServico.BuscarLoginAsync(user).Result; 
         }
     }
 }

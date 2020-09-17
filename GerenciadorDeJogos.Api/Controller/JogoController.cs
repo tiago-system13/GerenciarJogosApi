@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
 using GerenciadorDeJogos.Application.Models.Result;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorDeJogos.Api.Controller

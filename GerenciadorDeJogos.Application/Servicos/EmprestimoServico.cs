@@ -5,6 +5,7 @@ using GerenciadorDeJogos.Application.Models.Result;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Domain.Entidades;
 using GerenciadorDeJogos.Domain.Entidades.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,12 +36,32 @@ namespace GerenciadorDeJogos.Application.Servicos
 
         public async Task<ListaPaginavel<EmprestimoResult>> PesquisarEmprestimosAsync(PesquisaEmprestimoRequest pesquisaResquest)
         {
-            return await Task.FromResult(_mapper.Map<ListaPaginavel<EmprestimoResult>>(_emprestimoRepositorio.PesquisarEmprestimos(_mapper.Map<PesquisaEmprestimo>(pesquisaResquest))));
+            IQueryable<Emprestimo> query;
+
+            query = _emprestimoRepositorio.ListarTodos().Include(i => i.ItensEmprestados).ThenInclude(j => j.Jogo).Include(a => a.Amigo);
+
+            if (pesquisaResquest.AmigoId != null)
+            {
+                query = query.Where(x => x.AmigoId == pesquisaResquest.AmigoId);
+            }
+
+            if (pesquisaResquest.JogoId != null)
+            {
+                query = query.Where(x => x.ItensEmprestados.Any(item => item.JogoId == pesquisaResquest.JogoId));
+            }
+
+            if (pesquisaResquest.DataEmprestimo != null)
+            {
+                query = query.Where(x => x.DataEmprestimo == pesquisaResquest.DataEmprestimo);
+            }
+
+            var emprestimosResult = query.ParaListaPaginavel(pesquisaResquest.IndiceDePagina, pesquisaResquest.RegistrosPorPagina, pesquisaResquest.Ordenacao, x => x.DataEmprestimo);
+            return await Task.FromResult(_mapper.Map<ListaPaginavel<EmprestimoResult>>(emprestimosResult));
         }
 
         public async Task<EmprestimoResult> DevolverAsync(DevolucaoRequest devolucaoRequest)
         { 
-            var emprestimoDb = _emprestimoRepositorio.BuscarPorId(devolucaoRequest.Id);
+            var emprestimoDb = _emprestimoRepositorio.BuscarPorId(devolucaoRequest.Id,e=> e.ItensEmprestados);
 
             if (emprestimoDb == null)
             {
@@ -49,7 +70,7 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             EfetivarDevolucao(emprestimoDb.ItensEmprestados, devolucaoRequest.ItensDevolvidos);
 
-            return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.Atualizar(emprestimoDb)));
+            return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.Devolver(emprestimoDb)));
         }
 
         public async Task<EmprestimoResult> EmprestarAsync(EmprestimoRequest emprestimoRequest)

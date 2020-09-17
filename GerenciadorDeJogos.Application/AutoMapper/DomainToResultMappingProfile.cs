@@ -10,6 +10,8 @@ namespace GerenciadorDeJogos.Application.AutoMapper
         {
             CreateMap<Amigo, AmigoResult>();
 
+            CreateMap<Usuario, UsuarioResult>();
+
             CreateMap<Jogo, JogoResult>()
             .ForMember(x => x.NomeProprietario, opt => opt.MapFrom(src => src.Proprietario.Nome));
 
@@ -18,6 +20,7 @@ namespace GerenciadorDeJogos.Application.AutoMapper
 
             CreateMap<Emprestimo, EmprestimoResult>()
             .ForMember(x => x.NomeAmigo, opt => opt.MapFrom(src => src.Amigo.Nome));
+
 
         }
     }

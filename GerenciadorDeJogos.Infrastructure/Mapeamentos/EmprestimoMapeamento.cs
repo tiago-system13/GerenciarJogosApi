@@ -11,7 +11,8 @@ namespace GerenciadorDeJogos.Infrastructure.Mapeamentos
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .HasColumnName("emprestimo_id");
+                .HasColumnName("emprestimo_id")
+                .ValueGeneratedOnAdd();
 
             builder.Property(x => x.AmigoId)
                .HasColumnName("amigo_id")
