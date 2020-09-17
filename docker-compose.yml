@@ -7,7 +7,11 @@ services:
       context: .
       dockerfile: GerenciadorDeJogos.Api/Dockerfile
     environment:
-      TZ: America/Sao_Paulo 
+      TZ: America/Sao_Paulo
+      ASPNETCORE_ENVIRONMENT: Development
+      Issuer: Jogos
+      Audience: Jogos
+      TempoExpiracaoToken: 30
     ports:
       - "44332:80"
     links:

@@ -4,6 +4,7 @@ using GerenciadorDeJogos.Application.Models.Result;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Seguranca.Configuracao;
 using GerenciadorDeJogos.Application.Validations;
+using GerenciadorDeJogos.Domain.Constantes;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -49,7 +50,7 @@ namespace GerenciadorDeJogos.Application.Servicos
                     );
 
                 DateTime createDate = DateTime.Now;
-                DateTime expirationDate = createDate.AddMinutes(30);
+                DateTime expirationDate = createDate.AddMinutes(Convert.ToDouble(EnvConstants.TempoExpiracaoToken));
 
                 var handler = new JwtSecurityTokenHandler();
                 string token = CreateToken(identity, createDate, expirationDate, handler);
@@ -66,8 +67,8 @@ namespace GerenciadorDeJogos.Application.Servicos
         {
             var securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {
-                Issuer = "Teste",
-                Audience = "Aud",
+                Issuer = EnvConstants.ISSUER,
+                Audience = EnvConstants.Audience,
                 SigningCredentials = _signingConfiguracao.SigningCredentials,
                 Subject = identity,
                 NotBefore = createDate,
