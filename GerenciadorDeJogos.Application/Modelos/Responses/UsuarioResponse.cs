@@ -1,8 +1,8 @@
 ﻿using GerenciadorDeJogos.Application.Models.Request;
 
-namespace GerenciadorDeJogos.Application.Models.Result
+namespace GerenciadorDeJogos.Application.Models.Responses
 {
-    public class UsuarioResult:ModelBase
+    public class UsuarioResponse:ModelBase
     {
         public string Nome { get; set; }
 

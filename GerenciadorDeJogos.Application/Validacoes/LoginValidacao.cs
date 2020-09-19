@@ -3,9 +3,9 @@ using GerenciadorDeJogos.Application.Models.Request;
 
 namespace GerenciadorDeJogos.Application.Validations
 {
-    public class LoginValidation: AbstractValidator<LoginRequest>
+    public class LoginValidacao : AbstractValidator<LoginRequest>
     {
-        public LoginValidation()
+        public LoginValidacao ()
         {
             RuleFor(a => a.Login)
             .NotNull()

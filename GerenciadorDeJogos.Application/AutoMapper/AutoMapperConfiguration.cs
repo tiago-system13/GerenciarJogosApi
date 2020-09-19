@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GerenciadorDeJogos.Application.AutoMapper
 {
@@ -11,7 +8,7 @@ namespace GerenciadorDeJogos.Application.AutoMapper
         {
             return new MapperConfiguration(ps =>
             {
-                ps.AddProfile(new DomainToResultMappingProfile());
+                ps.AddProfile(new DomainToResponseMappingProfile());
                 ps.AddProfile(new RequestToDomainMappingProfile());
             });
         }

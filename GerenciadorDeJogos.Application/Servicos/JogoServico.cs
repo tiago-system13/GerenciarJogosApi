@@ -2,7 +2,7 @@
 using GerenciadorDeJogos.Application.Exceptions;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Validations;
 using GerenciadorDeJogos.Domain.Entidades;
@@ -26,11 +26,11 @@ namespace GerenciadorDeJogos.Application.Servicos
 
         private void ValidarJogo(Jogo jogo)
         {
-            var jogoValidate = new JogoValidation();
+            var jogoValidate = new JogoValidacao();
             new FluentResultAdapter().VerificaErros(jogoValidate.Validate(jogo));
         }
 
-        public async Task<JogoResult> AtualizarAsync(JogoRequest jogoRequest)
+        public async Task<JogoResponse> AtualizarAsync(JogoRequest jogoRequest)
         {
             var ExisteJogo = _jogoRepositorio.Existe(jogoRequest.Id);
 
@@ -43,12 +43,12 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             ValidarJogo(jogo);
 
-            return await Task.FromResult(_mapper.Map<JogoResult>(_jogoRepositorio.Atualizar(jogo)));
+            return await Task.FromResult(_mapper.Map<JogoResponse>(_jogoRepositorio.Atualizar(jogo)));
         }
 
-        public async Task<JogoResult> BuscarPorIdAsync(int id)
+        public async Task<JogoResponse> BuscarPorIdAsync(int id)
         {
-            return await Task.FromResult(_mapper.Map<JogoResult>(_jogoRepositorio.BuscarPorId(id)));
+            return await Task.FromResult(_mapper.Map<JogoResponse>(_jogoRepositorio.BuscarPorId(id)));
         }
 
         public async Task<bool> ExcluirAsync(int id)
@@ -65,16 +65,16 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(true);
         }
 
-        public async Task<JogoResult> InserirAsync(JogoRequest jogoRequest)
+        public async Task<JogoResponse> InserirAsync(JogoRequest jogoRequest)
         {
             var jogo = _mapper.Map<Jogo>(jogoRequest);
           
             ValidarJogo(jogo);
 
-            return await Task.FromResult(_mapper.Map<JogoResult>(_jogoRepositorio.Inserir(jogo)));
+            return await Task.FromResult(_mapper.Map<JogoResponse>(_jogoRepositorio.Inserir(jogo)));
         }
 
-        public async Task<ListaPaginavel<JogoResult>> PesquisarAsync(PesquisaResquest pesquisa)
+        public async Task<ListaPaginavel<JogoResponse>> PesquisarAsync(PesquisaResquest pesquisa)
         {
             IQueryable<Jogo> query;
 
@@ -87,10 +87,10 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             var resultadoPesquisa = query.ParaListaPaginavel(pesquisa.IndiceDePagina, pesquisa.RegistrosPorPagina, pesquisa.Ordenacao, x => x.Nome);
 
-            return await Task.FromResult(_mapper.Map<ListaPaginavel<JogoResult>>(resultadoPesquisa));
+            return await Task.FromResult(_mapper.Map<ListaPaginavel<JogoResponse>>(resultadoPesquisa));
         }
 
-        public async Task<List<JogoResult>> BuscarPorNome(string nome)
+        public async Task<List<JogoResponse>> BuscarPorNome(string nome)
         {
             var jogos = _jogoRepositorio.ListarTodos();
 
@@ -99,7 +99,7 @@ namespace GerenciadorDeJogos.Application.Servicos
                 jogos = jogos.Where(a => a.Nome.ToLower().Contains(nome.ToLower()));
             }
 
-            return await Task.FromResult(_mapper.Map<List<JogoResult>>(jogos));
+            return await Task.FromResult(_mapper.Map<List<JogoResponse>>(jogos));
         }
     }
 }

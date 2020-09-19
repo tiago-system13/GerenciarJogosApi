@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorDeJogos.Api.Controller
@@ -20,7 +20,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<UsuarioResult>>> Pesquisar([FromQuery] PesquisaResquest pesquisaResquest)
+        public async Task<ActionResult<List<UsuarioResponse>>> Pesquisar([FromQuery] PesquisaResquest pesquisaResquest)
         {
             var usuario = await _usuarioServico.PesquisarAsync(pesquisaResquest).ConfigureAwait(false);
 
@@ -29,14 +29,14 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("{id:int}/amigo")]
-        public async Task<ActionResult<UsuarioResult>> ObterPorId(int id)
+        public async Task<ActionResult<UsuarioResponse>> ObterPorId(int id)
         {
             var usuario = await _usuarioServico.BuscarPorIdAsync(id).ConfigureAwait(false);
             return Ok(usuario);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UsuarioResult>> Adicionar([FromBody]UsuarioRequest usuario)
+        public async Task<ActionResult<UsuarioResponse>> Adicionar([FromBody]UsuarioRequest usuario)
         {
 
             var amigoResult = await _usuarioServico.InserirAsync(usuario).ConfigureAwait(false);
@@ -44,7 +44,7 @@ namespace GerenciadorDeJogos.Api.Controller
         }
 
         [HttpPut]
-        public async Task<ActionResult<UsuarioResult>> Editar([FromBody]UsuarioRequest usuario)
+        public async Task<ActionResult<UsuarioResponse>> Editar([FromBody]UsuarioRequest usuario)
         {
             var usuarioResult = await _usuarioServico.AtualizarAsync(usuario).ConfigureAwait(false);
             return Ok(usuarioResult);

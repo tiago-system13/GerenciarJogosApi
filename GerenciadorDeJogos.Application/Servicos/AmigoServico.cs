@@ -2,12 +2,11 @@
 using GerenciadorDeJogos.Application.Exceptions;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Validations;
 using GerenciadorDeJogos.Domain.Entidades;
 using GerenciadorDeJogos.Domain.Entidades.Base;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             _mapper = mapper;
         }
 
-        public async Task<AmigoResult> AtualizarAsync(AmigoRequest amigoRequest)
+        public async Task<AmigoResponse> AtualizarAsync(AmigoRequest amigoRequest)
         {
             var ExisteAmigo = _amigoRepositorio.Existe(amigoRequest.Id);
             
@@ -37,15 +36,15 @@ namespace GerenciadorDeJogos.Application.Servicos
             var amigo = _mapper.Map<Amigo>(amigoRequest);
             ValidarAmigo(amigo);
 
-            return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.Atualizar(amigo)));
+            return await Task.FromResult(_mapper.Map<AmigoResponse>(_amigoRepositorio.Atualizar(amigo)));
         }
 
-        public async Task<AmigoResult> BuscarPorIdAsync(int id)
+        public async Task<AmigoResponse> BuscarPorIdAsync(int id)
         {
-            return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.BuscarPorId(id)));
+            return await Task.FromResult(_mapper.Map<AmigoResponse>(_amigoRepositorio.BuscarPorId(id)));
         }
 
-        public async Task<List<AmigoResult>> BuscarPorNome(string nome)
+        public async Task<List<AmigoResponse>> BuscarPorNome(string nome)
         {
             var amigos = _amigoRepositorio.ListarTodos();
 
@@ -54,7 +53,7 @@ namespace GerenciadorDeJogos.Application.Servicos
                 amigos = amigos.Where(a=> a.Nome.ToLower().Contains(nome.ToLower()));
             }
 
-            return await Task.FromResult(_mapper.Map<List<AmigoResult>>(amigos));
+            return await Task.FromResult(_mapper.Map<List<AmigoResponse>>(amigos));
         }
 
         public async Task<bool> ExcluirAsync(int id)
@@ -71,15 +70,15 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(true);
         }
 
-        public async Task<AmigoResult> InserirAsync(AmigoRequest amigoRequest)
+        public async Task<AmigoResponse> InserirAsync(AmigoRequest amigoRequest)
         {
             var amigo = _mapper.Map<Amigo>(amigoRequest);
             ValidarAmigo(amigo);
 
-            return await Task.FromResult(_mapper.Map<AmigoResult>(_amigoRepositorio.Inserir(amigo)));
+            return await Task.FromResult(_mapper.Map<AmigoResponse>(_amigoRepositorio.Inserir(amigo)));
         }
 
-        public async Task<ListaPaginavel<AmigoResult>> PesquisarAsync(PesquisaResquest pesquisa)
+        public async Task<ListaPaginavel<AmigoResponse>> PesquisarAsync(PesquisaResquest pesquisa)
         {
             IQueryable<Amigo> query;
 
@@ -92,12 +91,12 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             var resultadoPesquisa = query.ParaListaPaginavel(pesquisa.IndiceDePagina, pesquisa.RegistrosPorPagina, pesquisa.Ordenacao, x => x.Nome);
            
-            return await Task.FromResult(_mapper.Map<ListaPaginavel<AmigoResult>>(resultadoPesquisa));
+            return await Task.FromResult(_mapper.Map<ListaPaginavel<AmigoResponse>>(resultadoPesquisa));
         }
 
         private void ValidarAmigo(Amigo amigo)
         {
-            var amigoValidate = new AmigoValidation();
+            var amigoValidate = new AmigoValidacao();
             new FluentResultAdapter().VerificaErros(amigoValidate.Validate(amigo));
         }
     }

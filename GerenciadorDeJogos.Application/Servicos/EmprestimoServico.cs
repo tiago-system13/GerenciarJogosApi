@@ -2,7 +2,7 @@
 using GerenciadorDeJogos.Application.Exceptions;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Domain.Entidades;
 using GerenciadorDeJogos.Domain.Entidades.Base;
@@ -25,17 +25,17 @@ namespace GerenciadorDeJogos.Application.Servicos
             _mapper = mapper;
         }
 
-        public async Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorAmigoAsync(int amigoId)
+        public async Task<EmprestimoResponse> BuscarEmprestimoNaoDevolvidoPorAmigoAsync(int amigoId)
         {
-           return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.BuscarEmprestimoNaoDevolvidoPorAmigo(amigoId)));
+           return await Task.FromResult(_mapper.Map<EmprestimoResponse>(_emprestimoRepositorio.BuscarEmprestimoNaoDevolvidoPorAmigo(amigoId)));
         }
 
-        public async Task<EmprestimoResult> BuscarEmprestimoNaoDevolvidoPorJogoAsync(int jogoId, int proprietarioId)
+        public async Task<EmprestimoResponse> BuscarEmprestimoNaoDevolvidoPorJogoAsync(int jogoId, int proprietarioId)
         {
-            return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.BuscarEmprestimoNaoDevolvidoPorJogo(jogoId, proprietarioId)));
+            return await Task.FromResult(_mapper.Map<EmprestimoResponse>(_emprestimoRepositorio.BuscarEmprestimoNaoDevolvidoPorJogo(jogoId, proprietarioId)));
         }
 
-        public async Task<ListaPaginavel<EmprestimoResult>> PesquisarEmprestimosAsync(PesquisaEmprestimoRequest pesquisaResquest)
+        public async Task<ListaPaginavel<EmprestimoResponse>> PesquisarEmprestimosAsync(PesquisaEmprestimoRequest pesquisaResquest)
         {
             IQueryable<Emprestimo> query;
 
@@ -56,11 +56,11 @@ namespace GerenciadorDeJogos.Application.Servicos
                 query = query.Where(x => x.DataEmprestimo == pesquisaResquest.DataEmprestimo);
             }
 
-            var emprestimosResult = query.ParaListaPaginavel(pesquisaResquest.IndiceDePagina, pesquisaResquest.RegistrosPorPagina, pesquisaResquest.Ordenacao, x => x.DataEmprestimo);
-            return await Task.FromResult(_mapper.Map<ListaPaginavel<EmprestimoResult>>(emprestimosResult));
+            var emprestimosResponse = query.ParaListaPaginavel(pesquisaResquest.IndiceDePagina, pesquisaResquest.RegistrosPorPagina, pesquisaResquest.Ordenacao, x => x.DataEmprestimo);
+            return await Task.FromResult(_mapper.Map<ListaPaginavel<EmprestimoResponse>>(emprestimosResponse));
         }
 
-        public async Task<EmprestimoResult> DevolverAsync(DevolucaoRequest devolucaoRequest)
+        public async Task<EmprestimoResponse> DevolverAsync(DevolucaoRequest devolucaoRequest)
         { 
             var emprestimoDb = _emprestimoRepositorio.BuscarPorId(devolucaoRequest.Id,e=> e.ItensEmprestados);
 
@@ -71,10 +71,10 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             EfetivarDevolucao(emprestimoDb.ItensEmprestados, devolucaoRequest.ItensDevolvidos);
 
-            return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.Devolver(emprestimoDb)));
+            return await Task.FromResult(_mapper.Map<EmprestimoResponse>(_emprestimoRepositorio.Devolver(emprestimoDb)));
         }
 
-        public async Task<EmprestimoResult> EmprestarAsync(EmprestimoRequest emprestimoRequest)
+        public async Task<EmprestimoResponse> EmprestarAsync(EmprestimoRequest emprestimoRequest)
         {
             var emprestimo = _mapper.Map<Emprestimo>(emprestimoRequest);
 
@@ -87,7 +87,7 @@ namespace GerenciadorDeJogos.Application.Servicos
                 item.Emprestimo = emprestimo;
             }
 
-           return await Task.FromResult(_mapper.Map<EmprestimoResult>(_emprestimoRepositorio.Inserir(emprestimo)));
+           return await Task.FromResult(_mapper.Map<EmprestimoResponse>(_emprestimoRepositorio.Inserir(emprestimo)));
         }
 
         private DateTime CalcularDataPrevistaDevolucao(Emprestimo emprestimo)

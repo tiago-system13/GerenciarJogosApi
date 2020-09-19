@@ -4,9 +4,9 @@ using GerenciadorDeJogos.Domain.Entidades;
 
 namespace GerenciadorDeJogos.Application.Validations
 {
-    public class EmprestimoValidation: AbstractValidator<Emprestimo>
+    public class EmprestimoValidacao: AbstractValidator<Emprestimo>
     {
-        public EmprestimoValidation()
+        public EmprestimoValidacao()
         {
             RuleFor(a => a.AmigoId)
            .NotEqual(0)

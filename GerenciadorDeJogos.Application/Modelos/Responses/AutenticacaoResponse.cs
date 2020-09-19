@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GerenciadorDeJogos.Application.Models.Result
+namespace GerenciadorDeJogos.Application.Models.Responses
 {
-    public class AutenticacaoResult
+    public class AutenticacaoResponse
     {
         public bool Autenticated { get; set; }
 

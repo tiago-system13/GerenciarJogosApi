@@ -1,6 +1,6 @@
 ﻿using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -20,7 +20,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [AllowAnonymous]
         [HttpPost]
-        public Task<AutenticacaoResult> Post([FromBody]LoginRequest user)
+        public Task<AutenticacaoResponse> Post([FromBody]LoginRequest user)
         {
             return _loginServico.BuscarLoginAsync(user);
             
