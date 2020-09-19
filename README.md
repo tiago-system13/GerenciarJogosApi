@@ -47,7 +47,7 @@ Manual de montagem de ambiente de desenvolvimento.
 
 ## Execução
 
-O projeto Enquete está dividido em módulos, o módulo GerenciadorDeJogos.Api é o ponto de entrada da aplicação, os módulos GerenciadorDeJogos.Application, GerenciadorDeJogos.Domain, GerenciadorDeJogos.Infrastructure e o GerenciadorDeJogos.Test é o projeto que contém os testes.
+O projeto gerenciar jogos está dividido em módulos, o módulo GerenciadorDeJogos.Api é o ponto de entrada da aplicação, os módulos GerenciadorDeJogos.Application, GerenciadorDeJogos.Domain, GerenciadorDeJogos.Infrastructure e o GerenciadorDeJogos.Test é o projeto que contém os testes.
 
 **Atenção**
 
