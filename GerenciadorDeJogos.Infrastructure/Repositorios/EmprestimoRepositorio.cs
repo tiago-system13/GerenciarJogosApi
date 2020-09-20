@@ -1,11 +1,8 @@
 ﻿using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Domain.Entidades;
-using GerenciadorDeJogos.Domain.Entidades.Base;
 using GerenciadorDeJogos.Infrastructure.Contexto;
 using GerenciadorDeJogos.Infrastructure.Repositorios.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace GerenciadorDeJogos.Infrastructure.Repositorios
@@ -17,7 +14,8 @@ namespace GerenciadorDeJogos.Infrastructure.Repositorios
 
         private IQueryable<Emprestimo> Query()
         {
-            return ListarTodos().Include(i => i.ItensEmprestados).ThenInclude(j => j.Jogo);
+            return ListarTodos().Include(i => i.ItensEmprestados).ThenInclude(j => j.Jogo).ThenInclude(a=>a.Proprietario).Include(a=> a.Amigo);
+            
         }
 
         public Emprestimo BuscarEmprestimoNaoDevolvidoPorAmigo(int amigoId)
