@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorDeJogos.Api.Controller
 {
-    [Route("api/jogo")]
+    [Route("api/[controller]")]
     [ApiController]
     public class JogoController : ControllerBase
     {
