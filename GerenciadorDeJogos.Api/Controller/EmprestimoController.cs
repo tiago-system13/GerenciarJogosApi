@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorDeJogos.Api.Controller
 {
-    [Route("api/emprestimo")]
+    [Route("api/[controller]")]
     [ApiController]
     public class EmprestimoController : ControllerBase
     {
