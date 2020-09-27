@@ -1,8 +1,6 @@
 ﻿using GerenciadorDeJogos.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Linq;
 using System.Net;
 
 namespace GerenciadorDeJogos.Api.Filtro
