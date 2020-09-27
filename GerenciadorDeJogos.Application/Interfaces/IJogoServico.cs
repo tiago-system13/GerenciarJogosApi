@@ -1,7 +1,6 @@
 ﻿using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using GerenciadorDeJogos.Domain.Entidades.Base;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,11 +8,11 @@ namespace GerenciadorDeJogos.Application.Interfaces
 {
     public interface IJogoServico
     {
-        Task<JogoResult> InserirAsync(JogoRequest amigoRequest);
-        Task<JogoResult> BuscarPorIdAsync(int id);
-        Task<JogoResult> AtualizarAsync(JogoRequest amigoRequest);
+        Task<JogoResponse> InserirAsync(JogoRequest amigoRequest);
+        Task<JogoResponse> BuscarPorIdAsync(int id);
+        Task<JogoResponse> AtualizarAsync(JogoRequest amigoRequest);
         Task<bool> ExcluirAsync(int id);
-        Task<ListaPaginavel<JogoResult>> PesquisarAsync(PesquisaResquest pesquisa);
-        Task<List<JogoResult>> BuscarPorNome(string nome);
+        Task<ListaPaginavel<JogoResponse>> PesquisarAsync(PesquisaResquest pesquisa);
+        Task<List<JogoResponse>> BuscarPorNome(string nome);
     }
 }

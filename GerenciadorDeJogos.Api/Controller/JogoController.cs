@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
-using Microsoft.AspNetCore.Authorization;
+using GerenciadorDeJogos.Application.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorDeJogos.Api.Controller
 {
-    [Route("api/jogo")]
+    [Route("api/[controller]")]
     [ApiController]
     public class JogoController : ControllerBase
     {
@@ -22,7 +20,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<JogoResult>>> Pesquisar([FromQuery] PesquisaResquest pesquisaResquest)
+        public async Task<ActionResult<List<JogoResponse>>> Pesquisar([FromQuery] PesquisaResquest pesquisaResquest)
         {
             var amigos = await _jogoServico.PesquisarAsync(pesquisaResquest).ConfigureAwait(false);
 
@@ -31,7 +29,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("{id:int}/jogo")]
-        public async Task<ActionResult<JogoResult>> ObterPorId(int id)
+        public async Task<ActionResult<JogoResponse>> ObterPorId(int id)
         {
             var amigo = await _jogoServico.BuscarPorIdAsync(id).ConfigureAwait(false);
             return Ok(amigo);
@@ -39,25 +37,25 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("{nome}/jogo")]
-        public async Task<ActionResult<JogoResult>> ObterPorNome(string nome)
+        public async Task<ActionResult<JogoResponse>> ObterPorNome(string nome)
         {
             var amigo = await _jogoServico.BuscarPorNome(nome).ConfigureAwait(false);
             return Ok(amigo);
         }
 
         [HttpPost]
-        public async Task<ActionResult<JogoResult>> Adicionar([FromBody]JogoRequest jogo)
+        public async Task<ActionResult<JogoResponse>> Adicionar([FromBody]JogoRequest jogo)
         {
 
-            var jogoResult = await _jogoServico.InserirAsync(jogo).ConfigureAwait(false);
-            return Ok(jogoResult);
+            var JogoResponse = await _jogoServico.InserirAsync(jogo).ConfigureAwait(false);
+            return Ok(JogoResponse);
         }
 
         [HttpPut]
-        public async Task<ActionResult<JogoResult>> Editar([FromBody]JogoRequest jogo)
+        public async Task<ActionResult<JogoResponse>> Editar([FromBody]JogoRequest jogo)
         {
-            var jogoResult = await _jogoServico.AtualizarAsync(jogo).ConfigureAwait(false);
-            return Ok(jogoResult);
+            var JogoResponse = await _jogoServico.AtualizarAsync(jogo).ConfigureAwait(false);
+            return Ok(JogoResponse);
         }
 
         [HttpDelete]

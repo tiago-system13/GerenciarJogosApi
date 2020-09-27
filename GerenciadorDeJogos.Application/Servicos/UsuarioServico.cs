@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Validations;
 using GerenciadorDeJogos.Domain.Entidades;
@@ -22,7 +22,7 @@ namespace GerenciadorDeJogos.Application.Servicos
             _usuarioRepositorio = usuarioRepositorio;
             _mapper = mapper;
         }
-        public async Task<UsuarioResult> AtualizarAsync(UsuarioRequest usuarioRequest)
+        public async Task<UsuarioResponse> AtualizarAsync(UsuarioRequest usuarioRequest)
         {
             var ExisteUsuario = _usuarioRepositorio.Existe(usuarioRequest.Id);
 
@@ -35,12 +35,12 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             ValidarUsuario(usuario);
 
-            return await Task.FromResult(_mapper.Map<UsuarioResult>(_usuarioRepositorio.Atualizar(usuario)));
+            return await Task.FromResult(_mapper.Map<UsuarioResponse>(_usuarioRepositorio.Atualizar(usuario)));
         }
 
-        public async Task<UsuarioResult> BuscarPorIdAsync(int id)
+        public async Task<UsuarioResponse> BuscarPorIdAsync(int id)
         {
-            return await Task.FromResult(_mapper.Map<UsuarioResult>(_usuarioRepositorio.BuscarPorId(id)));
+            return await Task.FromResult(_mapper.Map<UsuarioResponse>(_usuarioRepositorio.BuscarPorId(id)));
         }
 
         public async Task<bool> ExcluirAsync(int id)
@@ -57,15 +57,15 @@ namespace GerenciadorDeJogos.Application.Servicos
             return await Task.FromResult(true);
         }
 
-        public async Task<UsuarioResult> InserirAsync(UsuarioRequest usuarioRequest)
+        public async Task<UsuarioResponse> InserirAsync(UsuarioRequest usuarioRequest)
         {
             var usuario = _mapper.Map<Usuario>(usuarioRequest);
             ValidarUsuario(usuario);
 
-            return await Task.FromResult(_mapper.Map<UsuarioResult>(_usuarioRepositorio.Inserir(usuario)));
+            return await Task.FromResult(_mapper.Map<UsuarioResponse>(_usuarioRepositorio.Inserir(usuario)));
         }
 
-        public async Task<ListaPaginavel<UsuarioResult>> PesquisarAsync(PesquisaResquest pesquisa)
+        public async Task<ListaPaginavel<UsuarioResponse>> PesquisarAsync(PesquisaResquest pesquisa)
         {
             IQueryable<Usuario> query;
 
@@ -78,12 +78,12 @@ namespace GerenciadorDeJogos.Application.Servicos
 
             var resultadoPesquisa = query.ParaListaPaginavel(pesquisa.IndiceDePagina, pesquisa.RegistrosPorPagina, pesquisa.Ordenacao, x => x.Nome);
 
-            return await Task.FromResult(_mapper.Map<ListaPaginavel<UsuarioResult>>(resultadoPesquisa));
+            return await Task.FromResult(_mapper.Map<ListaPaginavel<UsuarioResponse>>(resultadoPesquisa));
         }
 
         private void ValidarUsuario(Usuario usuario)
         {
-            var jogoValidate = new UsuarioValidation();
+            var jogoValidate = new UsuarioValidacao();
             new FluentResultAdapter().VerificaErros(jogoValidate.Validate(usuario));
         }
     }

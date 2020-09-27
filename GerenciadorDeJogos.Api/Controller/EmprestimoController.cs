@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorDeJogos.Api.Controller
 {
-    [Route("api/emprestimo")]
+    [Route("api/[controller]")]
     [ApiController]
     public class EmprestimoController : ControllerBase
     {
@@ -19,15 +19,15 @@ namespace GerenciadorDeJogos.Api.Controller
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmprestimoResult>> Emprestar([FromBody]EmprestimoRequest emprestimo)
+        public async Task<ActionResult<EmprestimoResponse>> Emprestar([FromBody]EmprestimoRequest emprestimo)
         {
 
-            var emprestimoResult = await _emprestimoServico.EmprestarAsync(emprestimo).ConfigureAwait(false);
-            return Ok(emprestimoResult);
+            var EmprestimoResponse = await _emprestimoServico.EmprestarAsync(emprestimo).ConfigureAwait(false);
+            return Ok(EmprestimoResponse);
         }
 
         [HttpPut]
-        public async Task<ActionResult<EmprestimoResult>> Devolver([FromBody]DevolucaoRequest devolucao)
+        public async Task<ActionResult<EmprestimoResponse>> Devolver([FromBody]DevolucaoRequest devolucao)
         {
             var amigoResult = await _emprestimoServico.DevolverAsync(devolucao).ConfigureAwait(false);
             return Ok(amigoResult);
@@ -35,7 +35,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<EmprestimoResult>>> Pesquisar([FromQuery] PesquisaEmprestimoRequest pesquisaResquest)
+        public async Task<ActionResult<List<EmprestimoResponse>>> Pesquisar([FromQuery] PesquisaEmprestimoRequest pesquisaResquest)
         {
             var amigos = await _emprestimoServico.PesquisarEmprestimosAsync(pesquisaResquest).ConfigureAwait(false);
 
@@ -44,7 +44,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("{id:int}/amigo/emprestimo")]
-        public async Task<ActionResult<JogoResult>> BuscarEmprestimoNaoDevolvidoPorAmigo(int id)
+        public async Task<ActionResult<EmprestimoResponse>> BuscarEmprestimoNaoDevolvidoPorAmigo(int id)
         {
             var amigo = await _emprestimoServico.BuscarEmprestimoNaoDevolvidoPorAmigoAsync(id).ConfigureAwait(false);
             return Ok(amigo);
@@ -52,7 +52,7 @@ namespace GerenciadorDeJogos.Api.Controller
 
         [HttpGet]
         [Route("{jogoId:int}/jogo/{amigoId:int}/amigo/emprestimo")]
-        public async Task<ActionResult<JogoResult>> BuscarEmprestimoNaoDevolvido(int jogoId, int amigoId)
+        public async Task<ActionResult<EmprestimoResponse>> BuscarEmprestimoNaoDevolvido(int jogoId, int amigoId)
         {
             var amigo = await _emprestimoServico.BuscarEmprestimoNaoDevolvidoPorJogoAsync(jogoId, amigoId).ConfigureAwait(false);
             return Ok(amigo);

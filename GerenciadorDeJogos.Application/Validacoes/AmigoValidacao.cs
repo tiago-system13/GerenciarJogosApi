@@ -4,9 +4,9 @@ using GerenciadorDeJogos.Domain.Entidades;
 
 namespace GerenciadorDeJogos.Application.Validations
 {
-    public class AmigoValidation: AbstractValidator<Amigo>
+    public class AmigoValidacao: AbstractValidator<Amigo>
     {
-        public AmigoValidation()
+        public AmigoValidacao()
         {
             RuleFor(a => a.Nome)
             .NotNull()

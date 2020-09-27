@@ -1,9 +1,9 @@
 ﻿using GerenciadorDeJogos.Application.Models.Request;
 using System;
 
-namespace GerenciadorDeJogos.Application.Models.Result
+namespace GerenciadorDeJogos.Application.Models.Responses
 {
-    public class ItensEmprestadosResult:ModelBase
+    public class ItensEmprestadosResponse:ModelBase
     {
         public int JogoId { get; set; }
 

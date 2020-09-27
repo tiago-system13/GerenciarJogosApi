@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace GerenciadorDeJogos.Application.Models.Result
+namespace GerenciadorDeJogos.Application.Models.Responses
 {
-    public class EmprestimoResult: ModelBase
+    public class EmprestimoResponse: ModelBase
     {
         public int AmigoId { get; set; }
 
@@ -14,6 +14,6 @@ namespace GerenciadorDeJogos.Application.Models.Result
 
         public DateTime DataPrevistaDeVolucao { get; set; }
 
-        public List<ItensEmprestadosResult> ItensEmprestados { get; set; }
+        public List<ItensEmprestadosResponse> ItensEmprestados { get; set; }
     }
 }

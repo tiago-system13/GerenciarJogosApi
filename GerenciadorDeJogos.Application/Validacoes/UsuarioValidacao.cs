@@ -4,11 +4,11 @@ using GerenciadorDeJogos.Domain.Entidades;
 
 namespace GerenciadorDeJogos.Application.Validations
 {
-    public class UsuarioValidation : AbstractValidator<Usuario>
+    public class UsuarioValidacao : AbstractValidator<Usuario>
     {
        
 
-        public UsuarioValidation()
+        public UsuarioValidacao()
         {
             RuleFor(a => a.Nome)
             .NotNull().WithMessage(Mensagens.NOMEOBRIGATORIO)

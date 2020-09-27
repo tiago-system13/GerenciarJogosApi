@@ -1,6 +1,6 @@
 ﻿using GerenciadorDeJogos.Application.Interfaces;
 using GerenciadorDeJogos.Application.Models.Request;
-using GerenciadorDeJogos.Application.Models.Result;
+using GerenciadorDeJogos.Application.Models.Responses;
 using GerenciadorDeJogos.Application.Repositorios;
 using GerenciadorDeJogos.Application.Seguranca.Configuracao;
 using GerenciadorDeJogos.Application.Validations;
@@ -17,16 +17,14 @@ namespace GerenciadorDeJogos.Application.Servicos
     {
         private IUsuarioRepositorio _repositorio;
         private SigningConfiguracao _signingConfiguracao;
-        private TokenConfiguracao _tokenConfiguracao;
 
-        public LoginServico(IUsuarioRepositorio repositorio, SigningConfiguracao signingConfiguracao, TokenConfiguracao tokenConfiguracao)
+        public LoginServico(IUsuarioRepositorio repositorio, SigningConfiguracao signingConfiguracao)
         {
             _repositorio = repositorio;
             _signingConfiguracao = signingConfiguracao;
-            _tokenConfiguracao = tokenConfiguracao;
         }
 
-        public async Task<AutenticacaoResult> BuscarLoginAsync(LoginRequest usuario)
+        public async Task<AutenticacaoResponse> BuscarLoginAsync(LoginRequest usuario)
         {
             ValidarLogin(usuario);
 
@@ -80,18 +78,18 @@ namespace GerenciadorDeJogos.Application.Servicos
             return token;
         }
 
-        private AutenticacaoResult ExceptionObject()
+        private AutenticacaoResponse ExceptionObject()
         {
-            return new AutenticacaoResult
+            return new AutenticacaoResponse
             {
                 Autenticated = false,
                 Message = "Failed to autheticate"
             };
         }
 
-        private AutenticacaoResult SuccessObject(DateTime createDate, DateTime expirationDate, string token)
+        private AutenticacaoResponse SuccessObject(DateTime createDate, DateTime expirationDate, string token)
         {
-            return new AutenticacaoResult
+            return new AutenticacaoResponse
             {
                 Autenticated = true,
                 Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
@@ -103,7 +101,7 @@ namespace GerenciadorDeJogos.Application.Servicos
 
         private void ValidarLogin(LoginRequest login)
         {
-            var loginValidate = new LoginValidation();
+            var loginValidate = new LoginValidacao ();
             new FluentResultAdapter().VerificaErros(loginValidate.Validate(login));
         }
     }

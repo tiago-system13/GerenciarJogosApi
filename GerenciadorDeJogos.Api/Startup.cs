@@ -48,7 +48,7 @@ namespace GerenciadorDeJogos.Api
         {
             var connectionString = _configuration["MySqlConnection:MySqlConnectionString"];
             services.AddDbContext<JogosContexto>(options => options.UseMySql(connectionString));
-
+           
             var signingConfigurations = new SigningConfiguracao();
             services.AddSingleton(signingConfigurations);
 
@@ -102,7 +102,6 @@ namespace GerenciadorDeJogos.Api
 
             })
            .AddXmlSerializerFormatters();
-
             //Add Swagger Service
             services.AddSwaggerGen(s =>
             {
@@ -155,7 +154,6 @@ namespace GerenciadorDeJogos.Api
             services.AddScoped<IEmprestimoServico, EmprestimoServico>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             services.AddScoped<IUsuarioServico, UsuarioServico>();
-            services.AddScoped<ILoginServico, LoginServico>();
             services.AddScoped(typeof(IRepositorioBase<>), typeof(RepositorioBase<>));
 
             #endregion
@@ -205,9 +203,7 @@ namespace GerenciadorDeJogos.Api
             app.UseRewriter(option);
 
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
